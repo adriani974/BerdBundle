@@ -1,0 +1,30 @@
+sac:
+    path:     /
+    defaults: { _controller: "BerdPersonnageBundle:Sac:index" }
+
+sac_show:
+    path:     /{id}/show
+    defaults: { _controller: "BerdPersonnageBundle:Sac:show" }
+
+sac_new:
+    path:     /new
+    defaults: { _controller: "BerdPersonnageBundle:Sac:new" }
+
+sac_create:
+    path:     /create
+    defaults: { _controller: "BerdPersonnageBundle:Sac:create" }
+    requirements: { _method: post }
+
+sac_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BerdPersonnageBundle:Sac:edit" }
+
+sac_update:
+    path:     /{id}/update
+    defaults: { _controller: "BerdPersonnageBundle:Sac:update" }
+    requirements: { _method: post|put }
+
+sac_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BerdPersonnageBundle:Sac:delete" }
+    requirements: { _method: post|delete }

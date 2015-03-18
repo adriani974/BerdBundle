@@ -1,0 +1,23 @@
+berd_personnage_personnage:
+    resource: "@BerdPersonnageBundle/Resources/config/routing/personnage.yml"
+    prefix:   /personnage
+
+berd_personnage_sac:
+    resource: "@BerdPersonnageBundle/Resources/config/routing/sac.yml"
+    prefix:   /sac
+
+berd_personnage_items:
+    resource: "@BerdPersonnageBundle/Resources/config/routing/items.yml"
+    prefix:   /items
+
+berd_personnage:
+    pattern: /afficher/ 
+    defaults: {_controller:BerdPersonnageBundle:Personnage:afficher}
+
+berd_pesonnage:
+    pattern: /recuperer/{id}
+    defaults: {_controller:BerdPersonnageBundle:Personnage:recuperer}
+
+berd_personne:
+    pattern: /creer/
+    defaults: {_controller:BerdPersonnageBundle:Personnage:creer}

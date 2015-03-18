@@ -1,0 +1,10 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}BerdPesonnageBundle:Personnage:recuperer{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Personnage:recuperer page</h1>
+<li>{{ personnage.nom }}</li>
+<li>{{ personnage.dateNaissance|date('d-m-Y') }}</li>
+<li>{{ personnage.niveau }}</li><br>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}BerdPesonnageBundle:Personnage:creer{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Personnage:creer page</h1>
+<ul>
+	{% for personne in personnage %}
+		<li>{{ personne.nom }}</li>
+		<li>{{ personne.dateNaissance|date('d-m-Y') }}</li>
+		<li>{{ personne.niveau }}</li><br>
+	{% endfor %}
+</ul>
+{% endblock %}

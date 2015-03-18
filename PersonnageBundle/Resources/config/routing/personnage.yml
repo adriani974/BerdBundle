@@ -1,0 +1,30 @@
+personnage:
+    path:     /
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:index" }
+
+personnage_show:
+    path:     /{id}/show
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:show" }
+
+personnage_new:
+    path:     /new
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:new" }
+
+personnage_create:
+    path:     /create
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:create" }
+    requirements: { _method: post }
+
+personnage_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:edit" }
+
+personnage_update:
+    path:     /{id}/update
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:update" }
+    requirements: { _method: post|put }
+
+personnage_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BerdPersonnageBundle:Personnage:delete" }
+    requirements: { _method: post|delete }

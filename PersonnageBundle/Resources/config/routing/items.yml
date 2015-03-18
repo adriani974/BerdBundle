@@ -1,0 +1,30 @@
+items:
+    path:     /
+    defaults: { _controller: "BerdPersonnageBundle:Items:index" }
+
+items_show:
+    path:     /{id}/show
+    defaults: { _controller: "BerdPersonnageBundle:Items:show" }
+
+items_new:
+    path:     /new
+    defaults: { _controller: "BerdPersonnageBundle:Items:new" }
+
+items_create:
+    path:     /create
+    defaults: { _controller: "BerdPersonnageBundle:Items:create" }
+    requirements: { _method: post }
+
+items_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BerdPersonnageBundle:Items:edit" }
+
+items_update:
+    path:     /{id}/update
+    defaults: { _controller: "BerdPersonnageBundle:Items:update" }
+    requirements: { _method: post|put }
+
+items_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BerdPersonnageBundle:Items:delete" }
+    requirements: { _method: post|delete }

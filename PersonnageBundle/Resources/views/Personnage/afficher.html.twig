@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}BerdPesonnageBundle:Personnage:afficher{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Personnage:afficher page</h1>
+<ul>
+	{% for entity in entities %}
+		<li>{{ entity.nom }}</li>
+		<li>{{ entity.dateNaissance|date('d-m-Y') }}</li>
+		<li>{{ entity.niveau }}</li><br>
+	{% endfor %}
+</ul>
+{% endblock %}
