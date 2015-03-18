@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities2 %}
+        {% for entity in entities3 %}
             <tr>
                 <td><a href="{{ path('items_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.nom }}</td>

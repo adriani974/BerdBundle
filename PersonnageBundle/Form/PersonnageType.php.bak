@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ItemsType extends AbstractType
+class PersonnageType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,8 +16,9 @@ class ItemsType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('description')
-			->add('volume')
+            ->add('dateNaissance')
+            ->add('niveau')
+			->add('sacNom')
         ;
     }
     
@@ -27,7 +28,7 @@ class ItemsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Berd\PersonnageBundle\Entity\Items'
+            'data_class' => 'Berd\PersonnageBundle\Entity\Personnage'
         ));
     }
 
@@ -36,6 +37,6 @@ class ItemsType extends AbstractType
      */
     public function getName()
     {
-        return 'berd_personnagebundle_items';
+        return 'berd_personnagebundle_personnage';
     }
 }

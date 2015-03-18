@@ -9,6 +9,7 @@
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Description</th>
+				<th>Volume</th>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
                 <td><a href="{{ path('items_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.nom }}</td>
                 <td>{{ entity.description }}</td>
+				<td>{{ entity.volume }}</td>
                 <td>
                 <td>
                 <ul>
