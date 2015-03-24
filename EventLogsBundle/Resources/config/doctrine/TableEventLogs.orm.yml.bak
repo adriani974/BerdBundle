@@ -9,7 +9,7 @@ Berd\EventLogsBundle\Entity\TableEventLogs:
             generator:
                 strategy: AUTO
     fields:
-        idLogs:
-            type: integer
-            column: id_logs
+        type:
+            type: string
+            length: 255
     lifecycleCallbacks: {  }

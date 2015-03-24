@@ -54,4 +54,49 @@ class TableEventLogs
     {
         return $this->type;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $action;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->action = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add action
+     *
+     * @param \Berd\EventLogsBundle\Entity\Actions $action
+     * @return TableEventLogs
+     */
+    public function addAction(\Berd\EventLogsBundle\Entity\Actions $action)
+    {
+        $this->action[] = $action;
+
+        return $this;
+    }
+
+    /**
+     * Remove action
+     *
+     * @param \Berd\EventLogsBundle\Entity\Actions $action
+     */
+    public function removeAction(\Berd\EventLogsBundle\Entity\Actions $action)
+    {
+        $this->action->removeElement($action);
+    }
+
+    /**
+     * Get action
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
 }

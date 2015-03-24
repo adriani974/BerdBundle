@@ -7,7 +7,6 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Iddevice</th>
                 <th>Modele</th>
                 <th>Osarchitecture</th>
                 <th>Height</th>
@@ -26,7 +25,6 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('device_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.idDevice }}</td>
                 <td>{{ entity.modele }}</td>
                 <td>{{ entity.osArchitecture }}</td>
                 <td>{{ entity.height }}</td>

@@ -20,7 +20,11 @@ Berd\EventLogsBundle\Entity\Actions:
         userId:
             type: string
             length: 255
-        idDevice:
-            type: integer
-            column: id_device
+    manyToOne:
+        device:
+            targetEntity: Device
+    manyToOne:
+        tableEventLogs:
+            targetEntity: TableEventLogs
+            inversedBy: actions
     lifecycleCallbacks: {  }

@@ -23,10 +23,10 @@ class ActionsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BerdEventLogsBundle:Actions')->findAll();
+        $entities1 = $em->getRepository('BerdEventLogsBundle:Actions')->findAll();
 
         return $this->render('BerdEventLogsBundle:Actions:index.html.twig', array(
-            'entities' => $entities,
+             'entities1' => $entities1,
         ));
     }
     /**

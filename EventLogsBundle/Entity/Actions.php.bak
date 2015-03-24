@@ -36,11 +36,6 @@ class Actions
     private $userId;
 
     /**
-     * @var integer
-     */
-    private $idDevice;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -141,57 +136,16 @@ class Actions
     {
         return $this->userId;
     }
-
-    /**
-     * Set idDevice
-     *
-     * @param integer $idDevice
-     * @return Actions
-     */
-    public function setIdDevice($idDevice)
-    {
-        $this->idDevice = $idDevice;
-
-        return $this;
-    }
-
-    /**
-     * Get idDevice
-     *
-     * @return integer 
-     */
-    public function getIdDevice()
-    {
-        return $this->idDevice;
-    }
-
-    /**
-     * @var integer
-	 * @ORM\ManyToOne
-     */
-    private $idLogs;
-
-
-    /**
-     * Set idLogs
-     *
-     * @param integer $idLogs
-     * @return Actions
-     */
-    public function setIdLogs($idLogs)
-    {
-        $this->idLogs = $idLogs;
-
-        return $this;
-    }
-
-    /**
-     * Get idLogs
-     *
-     * @return integer 
-     */
-    public function getIdLogs()
-    {
-        return $this->idLogs;
-    }
+	
+	/**
+	* @var TableEventLogs 
+	* @ORM\ManyToOne(targetEntity="TableEventLogs")
+	*/
+	private $TableEventLogs;
+	
+	/**
+	* @var Device 
+	* @ORM\ManyToOne(targetEntity="Device")
+	*/
+	private $Device;
 }

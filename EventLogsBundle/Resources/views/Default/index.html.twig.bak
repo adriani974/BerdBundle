@@ -1,4 +1,4 @@
 page par défaut eventlogs
 {% include 'BerdEventLogsBundle:TableEventLogs:index.html.twig' %}
 {% include 'BerdEventLogsBundle:Actions:index.html.twig' %}
-{% include 'BerdEventLogsBundle:Device:index.html.twig' %}
+

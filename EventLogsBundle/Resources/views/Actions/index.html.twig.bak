@@ -11,19 +11,23 @@
                 <th>Dateaction</th>
                 <th>Description</th>
                 <th>Userid</th>
+                <th>IdLogs</th>
                 <th>Iddevice</th>
+				<th>Id_tableEventLogs</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities %}
+        {% for entity in entities1 %}
             <tr>
                 <td><a href="{{ path('actions_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.nomAction }}</td>
                 <td>{% if entity.dateAction %}{{ entity.dateAction|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.description }}</td>
                 <td>{{ entity.userId }}</td>
+                <td>{{ entity.idLogs }}</td>
                 <td>{{ entity.idDevice }}</td>
+				<td>{{ entity.device.id }}</td>
                 <td>
                 <ul>
                     <li>

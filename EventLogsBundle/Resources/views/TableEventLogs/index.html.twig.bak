@@ -7,7 +7,8 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Idlogs</th>
+                <th>Type</th>
+				<th> id_actions <th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -15,7 +16,8 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('tableeventlogs_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.idLogs }}</td>
+                <td>{{ entity.type}}</td>
+				<td>{{ entity.actions.id}}</td>
                 <td>
                 <ul>
                     <li>

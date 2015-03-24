@@ -6,10 +6,6 @@ berd_event_logs_actions:
     resource: "@BerdEventLogsBundle/Resources/config/routing/actions.yml"
     prefix:   /actions
 
-berd_event_logs_contenir:
-    resource: "@BerdEventLogsBundle/Resources/config/routing/contenir.yml"
-    prefix:   /contenir
-
 berd_event_logs_tableeventlogs:
     resource: "@BerdEventLogsBundle/Resources/config/routing/tableeventlogs.yml"
     prefix:   /tableeventlogs

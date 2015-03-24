@@ -5,37 +5,38 @@ namespace Berd\EventLogsBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Berd\EventLogsBundle\Entity\Device;
-use Berd\EventLogsBundle\Form\DeviceType;
+use Berd\EventLogsBundle\Entity\Actions;
+use Berd\EventLogsBundle\Form\ActionsType;
 
 /**
- * Device controller.
+ * Actions controller.
  *
  */
-class DeviceController extends Controller
+class ActionsController extends Controller
 {
 
     /**
-     * Lists all Device entities.
+     * Lists all Actions entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+		
+		$entities = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->findAll();
+        $entities1 = $em->getRepository('BerdEventLogsBundle:Actions')->findAll();
 
-        $entities2 = $em->getRepository('BerdEventLogsBundle:Device')->findAll();
-
-        return $this->render('BerdEventLogsBundle:Device:index.html.twig', array(
-            'entities2' => $entities2,
+        return $this->render('BerdEventLogsBundle:Actions:index.html.twig', array(
+            'entities' => $entities, 'entities1' => $entities1,
         ));
     }
     /**
-     * Creates a new Device entity.
+     * Creates a new Actions entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity = new Device();
+        $entity = new Actions();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -44,26 +45,26 @@ class DeviceController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('device_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('actions_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('BerdEventLogsBundle:Device:new.html.twig', array(
+        return $this->render('BerdEventLogsBundle:Actions:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Creates a form to create a Device entity.
+     * Creates a form to create a Actions entity.
      *
-     * @param Device $entity The entity
+     * @param Actions $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Device $entity)
+    private function createCreateForm(Actions $entity)
     {
-        $form = $this->createForm(new DeviceType(), $entity, array(
-            'action' => $this->generateUrl('device_create'),
+        $form = $this->createForm(new ActionsType(), $entity, array(
+            'action' => $this->generateUrl('actions_create'),
             'method' => 'POST',
         ));
 
@@ -73,60 +74,60 @@ class DeviceController extends Controller
     }
 
     /**
-     * Displays a form to create a new Device entity.
+     * Displays a form to create a new Actions entity.
      *
      */
     public function newAction()
     {
-        $entity = new Device();
+        $entity = new Actions();
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('BerdEventLogsBundle:Device:new.html.twig', array(
+        return $this->render('BerdEventLogsBundle:Actions:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Finds and displays a Device entity.
+     * Finds and displays a Actions entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BerdEventLogsBundle:Device')->find($id);
+        $entity = $em->getRepository('BerdEventLogsBundle:Actions')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Device entity.');
+            throw $this->createNotFoundException('Unable to find Actions entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BerdEventLogsBundle:Device:show.html.twig', array(
+        return $this->render('BerdEventLogsBundle:Actions:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing Device entity.
+     * Displays a form to edit an existing Actions entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BerdEventLogsBundle:Device')->find($id);
+        $entity = $em->getRepository('BerdEventLogsBundle:Actions')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Device entity.');
+            throw $this->createNotFoundException('Unable to find Actions entity.');
         }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BerdEventLogsBundle:Device:edit.html.twig', array(
+        return $this->render('BerdEventLogsBundle:Actions:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -134,16 +135,16 @@ class DeviceController extends Controller
     }
 
     /**
-    * Creates a form to edit a Device entity.
+    * Creates a form to edit a Actions entity.
     *
-    * @param Device $entity The entity
+    * @param Actions $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Device $entity)
+    private function createEditForm(Actions $entity)
     {
-        $form = $this->createForm(new DeviceType(), $entity, array(
-            'action' => $this->generateUrl('device_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new ActionsType(), $entity, array(
+            'action' => $this->generateUrl('actions_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -152,17 +153,17 @@ class DeviceController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Device entity.
+     * Edits an existing Actions entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BerdEventLogsBundle:Device')->find($id);
+        $entity = $em->getRepository('BerdEventLogsBundle:Actions')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Device entity.');
+            throw $this->createNotFoundException('Unable to find Actions entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -172,17 +173,17 @@ class DeviceController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('device_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('actions_edit', array('id' => $id)));
         }
 
-        return $this->render('BerdEventLogsBundle:Device:edit.html.twig', array(
+        return $this->render('BerdEventLogsBundle:Actions:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
-     * Deletes a Device entity.
+     * Deletes a Actions entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -192,21 +193,21 @@ class DeviceController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BerdEventLogsBundle:Device')->find($id);
+            $entity = $em->getRepository('BerdEventLogsBundle:Actions')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Device entity.');
+                throw $this->createNotFoundException('Unable to find Actions entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('device'));
+        return $this->redirect($this->generateUrl('actions'));
     }
 
     /**
-     * Creates a form to delete a Device entity by id.
+     * Creates a form to delete a Actions entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -215,7 +216,7 @@ class DeviceController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('device_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('actions_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

@@ -23,10 +23,10 @@ class DeviceController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities2 = $em->getRepository('BerdEventLogsBundle:Device')->findAll();
+        $entities = $em->getRepository('BerdEventLogsBundle:Device')->findAll();
 
         return $this->render('BerdEventLogsBundle:Device:index.html.twig', array(
-            'entities2' => $entities2,
+            'entities' => $entities,
         ));
     }
     /**

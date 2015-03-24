@@ -36,12 +36,6 @@ class Actions
     private $userId;
 
     /**
-     * @var integer
-	 * @ORM\ManyToOne(targetEntity="Device")
-     */
-    private $idDevice;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -142,57 +136,60 @@ class Actions
     {
         return $this->userId;
     }
+    /**
+     * @var \Berd\EventLogsBundle\Entity\TableEventLogs
+     */
+    private $tableEventLogs;
+
 
     /**
-     * Set idDevice
+     * Set tableEventLogs
      *
-     * @param integer $idDevice
+     * @param \Berd\EventLogsBundle\Entity\TableEventLogs $tableEventLogs
      * @return Actions
      */
-    public function setIdDevice($idDevice)
+    public function setTableEventLogs(\Berd\EventLogsBundle\Entity\TableEventLogs $tableEventLogs = null)
     {
-        $this->idDevice = $idDevice;
+        $this->tableEventLogs = $tableEventLogs;
 
         return $this;
     }
 
     /**
-     * Get idDevice
+     * Get tableEventLogs
      *
-     * @return integer 
+     * @return \Berd\EventLogsBundle\Entity\TableEventLogs 
      */
-    public function getIdDevice()
+    public function getTableEventLogs()
     {
-        return $this->idDevice;
+        return $this->tableEventLogs;
     }
-
     /**
-     * @var integer
-	 * @ORM\ManyToOne(targetEntity="TableEventLogs")
+     * @var \Berd\EventLogsBundle\Entity\Device
      */
-    private $idLogs;
+    private $device;
 
 
     /**
-     * Set idLogs
+     * Set device
      *
-     * @param integer $idLogs
+     * @param \Berd\EventLogsBundle\Entity\Device $device
      * @return Actions
      */
-    public function setIdLogs($idLogs)
+    public function setDevice(\Berd\EventLogsBundle\Entity\Device $device = null)
     {
-        $this->idLogs = $idLogs;
+        $this->device = $device;
 
         return $this;
     }
 
     /**
-     * Get idLogs
+     * Get device
      *
-     * @return integer 
+     * @return \Berd\EventLogsBundle\Entity\Device 
      */
-    public function getIdLogs()
+    public function getDevice()
     {
-        return $this->idLogs;
+        return $this->device;
     }
 }

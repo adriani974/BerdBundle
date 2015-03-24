@@ -11,5 +11,5 @@ berd_event_logs_tableeventlogs:
     prefix:   /tableeventlogs
 
 berd_event_logs_homepage:
-    path:     /hello/{name}
+    path:     /eventlogsdefault
     defaults: { _controller: BerdEventLogsBundle:Default:index }
