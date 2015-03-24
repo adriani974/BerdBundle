@@ -1,0 +1,30 @@
+tableeventlogs:
+    path:     /
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:index" }
+
+tableeventlogs_show:
+    path:     /{id}/show
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:show" }
+
+tableeventlogs_new:
+    path:     /new
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:new" }
+
+tableeventlogs_create:
+    path:     /create
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:create" }
+    requirements: { _method: post }
+
+tableeventlogs_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:edit" }
+
+tableeventlogs_update:
+    path:     /{id}/update
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:update" }
+    requirements: { _method: post|put }
+
+tableeventlogs_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BerdEventLogsBundle:TableEventLogs:delete" }
+    requirements: { _method: post|delete }

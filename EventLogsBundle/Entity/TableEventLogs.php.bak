@@ -1,0 +1,58 @@
+<?php
+
+namespace Berd\EventLogsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TableEventLogs
+ * 
+ */
+class TableEventLogs
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @var integer
+     */
+    private $idLogs;
+
+
+    /**
+     * Set idLogs
+     *
+     * @param integer $idLogs
+     * @return TableEventLogs
+     */
+    public function setIdLogs($idLogs)
+    {
+        $this->idLogs = $idLogs;
+
+        return $this;
+    }
+
+    /**
+     * Get idLogs
+     *
+     * @return integer 
+     */
+    public function getIdLogs()
+    {
+        return $this->idLogs;
+    }
+}

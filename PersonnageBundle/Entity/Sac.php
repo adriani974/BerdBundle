@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Sac
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Berd\PersonnageBundle\Entity\SacRepository")
+ * @ORM\Entity(repositoryClass="Berd\PersonnageBundle\Repository\SacRepository")
  */
 class Sac
 {

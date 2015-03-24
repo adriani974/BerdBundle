@@ -1,0 +1,76 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Device</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Iddevice</th>
+                <td>{{ entity.idDevice }}</td>
+            </tr>
+            <tr>
+                <th>Modele</th>
+                <td>{{ entity.modele }}</td>
+            </tr>
+            <tr>
+                <th>Osarchitecture</th>
+                <td>{{ entity.osArchitecture }}</td>
+            </tr>
+            <tr>
+                <th>Height</th>
+                <td>{{ entity.height }}</td>
+            </tr>
+            <tr>
+                <th>Width</th>
+                <td>{{ entity.width }}</td>
+            </tr>
+            <tr>
+                <th>Netmask</th>
+                <td>{{ entity.netmask }}</td>
+            </tr>
+            <tr>
+                <th>Userid</th>
+                <td>{{ entity.userId }}</td>
+            </tr>
+            <tr>
+                <th>Deviceid</th>
+                <td>{{ entity.deviceId }}</td>
+            </tr>
+            <tr>
+                <th>Manufacturer</th>
+                <td>{{ entity.manufacturer }}</td>
+            </tr>
+            <tr>
+                <th>Version</th>
+                <td>{{ entity.version }}</td>
+            </tr>
+            <tr>
+                <th>Others</th>
+                <td>{{ entity.others }}</td>
+            </tr>
+            <tr>
+                <th>Isweb</th>
+                <td>{{ entity.isWeb }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('device') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('device_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

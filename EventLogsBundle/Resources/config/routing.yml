@@ -1,0 +1,15 @@
+berd_event_logs_device:
+    resource: "@BerdEventLogsBundle/Resources/config/routing/device.yml"
+    prefix:   /device
+
+berd_event_logs_actions:
+    resource: "@BerdEventLogsBundle/Resources/config/routing/actions.yml"
+    prefix:   /actions
+
+berd_event_logs_tableeventlogs:
+    resource: "@BerdEventLogsBundle/Resources/config/routing/tableeventlogs.yml"
+    prefix:   /tableeventlogs
+
+berd_event_logs_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: BerdEventLogsBundle:Default:index }

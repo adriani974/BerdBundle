@@ -1,0 +1,26 @@
+Berd\EventLogsBundle\Entity\Actions:
+    type: entity
+    table: null
+    repositoryClass: Berd\EventLogsBundle\Entity\ActionsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nomAction:
+            type: string
+            length: 255
+        dateAction:
+            type: datetime
+        description:
+            type: string
+            length: 255
+        userId:
+            type: string
+            length: 255
+        idDevice:
+            type: integer
+            column: id_device
+    lifecycleCallbacks: {  }

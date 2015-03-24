@@ -1,0 +1,15 @@
+Berd\EventLogsBundle\Entity\TableEventLogs:
+    type: entity
+    table: null
+    repositoryClass: Berd\EventLogsBundle\Entity\TableEventLogsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        idLogs:
+            type: integer
+            column: id_logs
+    lifecycleCallbacks: {  }

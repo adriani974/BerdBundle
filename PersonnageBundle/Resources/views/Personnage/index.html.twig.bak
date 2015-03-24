@@ -16,14 +16,14 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities1 %}
+        {% for entity in entities2 %}
             <tr>
                 <td><a href="{{ path('personnage_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.nom }}</td>
                 <td>{{ entity.dateNaissance|date('d.m.Y') }}</td>
                 <td>{{ entity.niveau }}</td>
 				{% for entity2 in entities2 %}
-					<td>{% if(entity2.nomSac == null) %}
+					<td>{% if(entity2.nomSac != null) %}
 							{{ entity2.nomSac }}
 							{% else %}
 							{{ 'il y a rien' }}
@@ -31,7 +31,7 @@
 					</td>
 				{% endfor %}
 				{% for entity3 in entities3 %}
-					<td>{% if(entity3.nom == null) %}
+					<td>{% if(entity3.nom != null) %}
 							{{ entity3.nom }}
 							{% else %}
 							{{ 'il y a rien' }}

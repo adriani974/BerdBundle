@@ -1,41 +1,41 @@
 <?php
 
-namespace Berd\PersonnageBundle\Controller;
+namespace Berd\EventLogsBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Berd\PersonnageBundle\Entity\Personnage;
-use Berd\PersonnageBundle\Form\PersonnageType;
+use Berd\EventLogsBundle\Entity\TableEventLogs;
+use Berd\EventLogsBundle\Form\TableEventLogsType;
 
 /**
- * Personnage controller.
+ * TableEventLogs controller.
  *
  */
-class PersonnageController extends Controller
+class TableEventLogsController extends Controller
 {
 
     /**
-     * Lists all Personnage entities.
+     * Lists all TableEventLogs entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities2 = $em->getRepository('BerdPersonnageBundle:Personnage')->findAll();
+        $entities = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->findAll();
 
-        return $this->render('BerdPersonnageBundle:Personnage:index.html.twig', array(
-            'entities2' => $entities2,
+        return $this->render('BerdEventLogsBundle:TableEventLogs:index.html.twig', array(
+            'entities' => $entities,
         ));
     }
     /**
-     * Creates a new Personnage entity.
+     * Creates a new TableEventLogs entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity = new Personnage();
+        $entity = new TableEventLogs();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -44,26 +44,26 @@ class PersonnageController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('personnage_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('tableeventlogs_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('BerdPersonnageBundle:Personnage:new.html.twig', array(
+        return $this->render('BerdEventLogsBundle:TableEventLogs:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Creates a form to create a Personnage entity.
+     * Creates a form to create a TableEventLogs entity.
      *
-     * @param Personnage $entity The entity
+     * @param TableEventLogs $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Personnage $entity)
+    private function createCreateForm(TableEventLogs $entity)
     {
-        $form = $this->createForm(new PersonnageType(), $entity, array(
-            'action' => $this->generateUrl('personnage_create'),
+        $form = $this->createForm(new TableEventLogsType(), $entity, array(
+            'action' => $this->generateUrl('tableeventlogs_create'),
             'method' => 'POST',
         ));
 
@@ -73,60 +73,60 @@ class PersonnageController extends Controller
     }
 
     /**
-     * Displays a form to create a new Personnage entity.
+     * Displays a form to create a new TableEventLogs entity.
      *
      */
     public function newAction()
     {
-        $entity = new Personnage();
+        $entity = new TableEventLogs();
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('BerdPersonnageBundle:Personnage:new.html.twig', array(
+        return $this->render('BerdEventLogsBundle:TableEventLogs:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Finds and displays a Personnage entity.
+     * Finds and displays a TableEventLogs entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BerdPersonnageBundle:Personnage')->find($id);
+        $entity = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Personnage entity.');
+            throw $this->createNotFoundException('Unable to find TableEventLogs entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BerdPersonnageBundle:Personnage:show.html.twig', array(
+        return $this->render('BerdEventLogsBundle:TableEventLogs:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing Personnage entity.
+     * Displays a form to edit an existing TableEventLogs entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BerdPersonnageBundle:Personnage')->find($id);
+        $entity = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Personnage entity.');
+            throw $this->createNotFoundException('Unable to find TableEventLogs entity.');
         }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BerdPersonnageBundle:Personnage:edit.html.twig', array(
+        return $this->render('BerdEventLogsBundle:TableEventLogs:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -134,16 +134,16 @@ class PersonnageController extends Controller
     }
 
     /**
-    * Creates a form to edit a Personnage entity.
+    * Creates a form to edit a TableEventLogs entity.
     *
-    * @param Personnage $entity The entity
+    * @param TableEventLogs $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Personnage $entity)
+    private function createEditForm(TableEventLogs $entity)
     {
-        $form = $this->createForm(new PersonnageType(), $entity, array(
-            'action' => $this->generateUrl('personnage_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new TableEventLogsType(), $entity, array(
+            'action' => $this->generateUrl('tableeventlogs_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -152,17 +152,17 @@ class PersonnageController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Personnage entity.
+     * Edits an existing TableEventLogs entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BerdPersonnageBundle:Personnage')->find($id);
+        $entity = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Personnage entity.');
+            throw $this->createNotFoundException('Unable to find TableEventLogs entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -172,17 +172,17 @@ class PersonnageController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('personnage_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('tableeventlogs_edit', array('id' => $id)));
         }
 
-        return $this->render('BerdPersonnageBundle:Personnage:edit.html.twig', array(
+        return $this->render('BerdEventLogsBundle:TableEventLogs:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
-     * Deletes a Personnage entity.
+     * Deletes a TableEventLogs entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -192,21 +192,21 @@ class PersonnageController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BerdPersonnageBundle:Personnage')->find($id);
+            $entity = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Personnage entity.');
+                throw $this->createNotFoundException('Unable to find TableEventLogs entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('personnage'));
+        return $this->redirect($this->generateUrl('tableeventlogs'));
     }
 
     /**
-     * Creates a form to delete a Personnage entity by id.
+     * Creates a form to delete a TableEventLogs entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -215,7 +215,7 @@ class PersonnageController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('personnage_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('tableeventlogs_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

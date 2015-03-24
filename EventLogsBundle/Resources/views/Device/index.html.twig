@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Device list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Modele</th>
+                <th>Osarchitecture</th>
+                <th>Height</th>
+                <th>Width</th>
+                <th>Netmask</th>
+                <th>Userid</th>
+                <th>Deviceid</th>
+                <th>Manufacturer</th>
+                <th>Version</th>
+                <th>Others</th>
+                <th>Isweb</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('device_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.modele }}</td>
+                <td>{{ entity.osArchitecture }}</td>
+                <td>{{ entity.height }}</td>
+                <td>{{ entity.width }}</td>
+                <td>{{ entity.netmask }}</td>
+                <td>{{ entity.userId }}</td>
+                <td>{{ entity.deviceId }}</td>
+                <td>{{ entity.manufacturer }}</td>
+                <td>{{ entity.version }}</td>
+                <td>{{ entity.others }}</td>
+                <td>{{ entity.isWeb }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('device_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('device_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('device_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

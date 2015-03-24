@@ -35,11 +35,7 @@ class Items
      */
     private $description;
 	
-	/**
-    * @var items
-    * @ORM\ManyToOne(targetEntity="Items")
-    */
-    private $items;
+	
 	
 	/**
      * @var integer

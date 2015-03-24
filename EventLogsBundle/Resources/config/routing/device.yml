@@ -1,0 +1,30 @@
+device:
+    path:     /
+    defaults: { _controller: "BerdEventLogsBundle:Device:index" }
+
+device_show:
+    path:     /{id}/show
+    defaults: { _controller: "BerdEventLogsBundle:Device:show" }
+
+device_new:
+    path:     /new
+    defaults: { _controller: "BerdEventLogsBundle:Device:new" }
+
+device_create:
+    path:     /create
+    defaults: { _controller: "BerdEventLogsBundle:Device:create" }
+    requirements: { _method: post }
+
+device_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BerdEventLogsBundle:Device:edit" }
+
+device_update:
+    path:     /{id}/update
+    defaults: { _controller: "BerdEventLogsBundle:Device:update" }
+    requirements: { _method: post|put }
+
+device_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BerdEventLogsBundle:Device:delete" }
+    requirements: { _method: post|delete }

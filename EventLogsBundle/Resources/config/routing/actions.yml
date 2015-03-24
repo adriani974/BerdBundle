@@ -1,0 +1,30 @@
+actions:
+    path:     /
+    defaults: { _controller: "BerdEventLogsBundle:Actions:index" }
+
+actions_show:
+    path:     /{id}/show
+    defaults: { _controller: "BerdEventLogsBundle:Actions:show" }
+
+actions_new:
+    path:     /new
+    defaults: { _controller: "BerdEventLogsBundle:Actions:new" }
+
+actions_create:
+    path:     /create
+    defaults: { _controller: "BerdEventLogsBundle:Actions:create" }
+    requirements: { _method: post }
+
+actions_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BerdEventLogsBundle:Actions:edit" }
+
+actions_update:
+    path:     /{id}/update
+    defaults: { _controller: "BerdEventLogsBundle:Actions:update" }
+    requirements: { _method: post|put }
+
+actions_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BerdEventLogsBundle:Actions:delete" }
+    requirements: { _method: post|delete }
