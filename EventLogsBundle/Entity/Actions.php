@@ -183,6 +183,11 @@ class Actions
 
         return $this;
     }
+	
+	public function __toString()
+	{
+		return $this->getId().'';
+	}
 
     /**
      * Get tableEventLogs

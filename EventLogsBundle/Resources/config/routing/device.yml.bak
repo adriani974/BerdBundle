@@ -28,7 +28,3 @@ device_delete:
     path:     /{id}/delete
     defaults: { _controller: "BerdEventLogsBundle:Device:delete" }
     requirements: { _method: post|delete }
-
-device_hello:
-    path:     /hello
-    defaults: { _controller: "BerdEventLogsBundle:Device:hello" }

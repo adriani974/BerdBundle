@@ -19,7 +19,8 @@ class ActionsType extends AbstractType
             ->add('dateAction')
             ->add('description')
             ->add('userId')
-            ->add('idDevice')
+            ->add('device')
+            ->add('tableEventsLogs')
         ;
     }
     

@@ -25,7 +25,6 @@ class DeviceRepository extends EntityRepository
 
 		$query->execute();
 		//$query->getResult();
-		
 		return $query;
 	}
 }

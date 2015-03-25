@@ -50,7 +50,14 @@
         {% endfor %}
         </tbody>
     </table>
-
+		
+			<li>
+			
+			
+			{{ render(controller("BerdEventLogsBundle:Device:hello")) }}
+		
+			</li>
+		
         <ul>
         <li>
             <a href="{{ path('device_new') }}">

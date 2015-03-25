@@ -79,6 +79,11 @@ class TableEventLogs
 
         return $this;
     }
+	
+	public function __toString()
+	{
+		return $this->getId().'';
+	}
 
     /**
      * Remove action

@@ -10,10 +10,6 @@
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Idaction</th>
-                <td>{{ entity.idAction }}</td>
-            </tr>
-            <tr>
                 <th>Nomaction</th>
                 <td>{{ entity.nomAction }}</td>
             </tr>

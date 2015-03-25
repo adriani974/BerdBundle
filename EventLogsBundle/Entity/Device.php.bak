@@ -6,8 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Device
- * 
- * @ORM\Entity(repositoryClass="Berd\EventLogsBundle\Repository\DeviceRepository")
  */
 class Device
 {

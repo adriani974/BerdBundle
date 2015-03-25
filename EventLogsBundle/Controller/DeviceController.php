@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berd\EventLogsBundle\Entity\Device;
 use Berd\EventLogsBundle\Form\DeviceType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Device controller.
@@ -24,11 +25,12 @@ class DeviceController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities2 = $em->getRepository('BerdEventLogsBundle:Device')->findAll();
-
+		
         return $this->render('BerdEventLogsBundle:Device:index.html.twig', array(
-            'entities2' => $entities2,
+            'entities2' => $entities2, 
         ));
     }
+    
     /**
      * Creates a new Device entity.
      *
@@ -221,4 +223,24 @@ class DeviceController extends Controller
             ->getForm()
         ;
     }
+	
+	/**
+	* Vérifie si l'appareil connecter est enregistrer dans la table device, si c'est pas le cas 
+	* je l'enregistre dans la table Device et on renvoie la clé primaire
+	*/
+	public function findDeviceAction($deviceId){
+		//vérifions si deviceId existe déjà dans ma table Device
+		/*$resultat = findDeviceInTable($deviceId);
+		
+		if($resultat){
+			$clePrimaire = getDeviceIdTable($deviceId);
+		}else{
+			
+		}
+		return $clePrimaire;*/
+	}
+	
+	public function helloAction(){
+		return new Response('bonjour ca va');
+	}
 }

@@ -11,9 +11,8 @@
                 <th>Dateaction</th>
                 <th>Description</th>
                 <th>Userid</th>
-                <th>IdLogs</th>
-                <th>Iddevice</th>
-				<th>Id_tableEventLogs</th>
+                <th>device_id</th>
+				<th>tableEventLogs_id</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -25,9 +24,8 @@
                 <td>{% if entity.dateAction %}{{ entity.dateAction|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.description }}</td>
                 <td>{{ entity.userId }}</td>
-                <td>{{ entity.idLogs }}</td>
-                <td>{{ entity.idDevice }}</td>
-				<td>{{ entity.device.modele }}</td>
+                <td>{{ entity.device }}</td>
+				<td>{{ entity.tableeventlogs }}</td>
                 <td>
                 <ul>
                     <li>

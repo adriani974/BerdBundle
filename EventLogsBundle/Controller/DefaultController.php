@@ -12,8 +12,10 @@ class DefaultController extends Controller
         $entities = $em->getRepository('BerdEventLogsBundle:TableEventLogs')->findAll();
         $entities1 = $em->getRepository('BerdEventLogsBundle:Actions')->findAll();
 		$entities2 = $em->getRepository('BerdEventLogsBundle:Device')->findAll();
-		
+
         return $this->render('BerdEventLogsBundle:Default:index.html.twig', array(
-            'entities' => $entities, 'entities1' => $entities1, 'entities2' => $entities2,));
+            'entities' => $entities, 'entities1' => $entities1, 'entities2' => $entities2, ));
     }
+	
+	
 }
