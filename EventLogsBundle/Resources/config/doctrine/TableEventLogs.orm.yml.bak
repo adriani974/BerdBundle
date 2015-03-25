@@ -12,4 +12,8 @@ Berd\EventLogsBundle\Entity\TableEventLogs:
         type:
             type: string
             length: 255
+    oneToMany:
+        action:
+            targetEntity: Actions
+            mappedBy: tableEventLogs
     lifecycleCallbacks: {  }

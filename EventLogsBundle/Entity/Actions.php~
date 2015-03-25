@@ -136,34 +136,7 @@ class Actions
     {
         return $this->userId;
     }
-    /**
-     * @var \Berd\EventLogsBundle\Entity\TableEventLogs
-     */
-    private $tableEventLogs;
-
-
-    /**
-     * Set tableEventLogs
-     *
-     * @param \Berd\EventLogsBundle\Entity\TableEventLogs $tableEventLogs
-     * @return Actions
-     */
-    public function setTableEventLogs(\Berd\EventLogsBundle\Entity\TableEventLogs $tableEventLogs = null)
-    {
-        $this->tableEventLogs = $tableEventLogs;
-
-        return $this;
-    }
-
-    /**
-     * Get tableEventLogs
-     *
-     * @return \Berd\EventLogsBundle\Entity\TableEventLogs 
-     */
-    public function getTableEventLogs()
-    {
-        return $this->tableEventLogs;
-    }
+    
     /**
      * @var \Berd\EventLogsBundle\Entity\Device
      */

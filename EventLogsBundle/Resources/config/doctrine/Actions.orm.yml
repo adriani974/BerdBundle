@@ -23,9 +23,9 @@ Berd\EventLogsBundle\Entity\Actions:
     manyToOne:
         device:
             targetEntity: Device
-
-    manyToOne:
         tableEventLogs:
             targetEntity: TableEventLogs
-            inversedBy: actions
+            joinColumn:
+                name: tableEventLogs_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }
