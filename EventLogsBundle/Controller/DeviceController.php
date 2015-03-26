@@ -223,24 +223,28 @@ class DeviceController extends Controller
             ->getForm()
         ;
     }
-	
-	/**
-	* Vérifie si l'appareil connecter est enregistrer dans la table device, si c'est pas le cas 
-	* je l'enregistre dans la table Device et on renvoie la clé primaire
-	*/
-	public function findDeviceAction($deviceId){
-		//vérifions si deviceId existe déjà dans ma table Device
-		/*$resultat = findDeviceInTable($deviceId);
-		
-		if($resultat){
-			$clePrimaire = getDeviceIdTable($deviceId);
-		}else{
-			
-		}
-		return $clePrimaire;*/
-	}
-	
-	public function helloAction(){
-		return new Response('bonjour ca va');
-	}
+
+    /**
+    * Vérifie si l'appareil connecter est enregistrer dans la table device, si c'est pas le cas 
+    * je l'enregistre dans la table Device et on renvoie la clé primaire
+    */
+    public function findByDeviceAction($deviceId = "deviceId26"){
+        //vérifions si deviceId existe déjà dans ma table Device
+        $findDevice = $this->getDoctrine()->getManager();
+        $response = $findDevice->getRepository('BerdEventLogsBundle:Device')->findByDeviceInTable($deviceId);
+
+        if($response == null){//on crée une nouvelle enregistrement dans la table Device
+            $entity = new Device();
+            $form   = $this->createCreateForm($entity);
+
+            return $this->render('BerdEventLogsBundle:Device:new.html.twig', array(
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            ));
+        }
+
+        return $this->render('BerdEventLogsBundle:Device:findDevice.html.twig', array(
+            'response' => $response,
+        ));
+    }
 }

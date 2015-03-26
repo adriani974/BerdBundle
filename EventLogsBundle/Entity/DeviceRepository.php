@@ -13,19 +13,20 @@ use Doctrine\ORM\EntityRepository;
 class DeviceRepository extends EntityRepository
 {
 	/**
-	*	Cette fonction a pour objectif de trouver dans la table device un deviceId
+	*	Cette fonction a pour objectif de trouver dans la table Device le deviceId passer comme argument
 	*/
-	public function findDeviceInTable($deviceId){
-		$query = $this->get('doctrine')->getEntityManager()
+	public function findByDeviceInTable($deviceId){
+		$query = $this->getEntityManager()
                ->createQuery('SELECT d FROM Berd\EventLogsBundle\Entity\Device d
-                        WHERE d.deviceId = :deviceId');
-		$query->setParameters(array(
-                'deviceId' => $deviceId
-		));
+                        WHERE d.deviceId = :deviceId')
+		->setParameter('deviceId', $deviceId);
 
-		$query->execute();
-		//$query->getResult();
+		try {
+			$response = $query->getResult();
+		} catch (\Doctrine\Orm\NoResultException $e) {
+			$response = null;
+		}
 		
-		return $query;
+		return $response;
 	}
 }

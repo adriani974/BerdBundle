@@ -52,10 +52,7 @@
     </table>
 		
 			<li>
-			
-			{% include "BerdEventLogsBundle:Device:hello" %}
-			{{ render(controller("BerdEventLogsBundle:Device:hello")) }}
-		
+			{{ render(controller("BerdEventLogsBundle:Device:new")) }}
 			</li>
 		
         <ul>

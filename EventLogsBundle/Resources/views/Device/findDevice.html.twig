@@ -1,0 +1,8 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>resultat requete </h1>
+	{% for rep in response %}
+		{{ rep }}
+	{% endfor %}
+{% endblock %}
