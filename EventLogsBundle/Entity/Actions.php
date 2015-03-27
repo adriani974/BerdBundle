@@ -34,6 +34,24 @@ class Actions
      * @var string
      */
     private $userId;
+	
+	/**
+	* @var array
+	*/
+	private $data;
+	
+	
+	/**
+	* Actions Constructor
+	*/
+	public function __construct($data = array()){
+		$this->nomAction = $data['nomAction'];
+		$this->dateAction = $data['dateAction'];
+		$this->description = $data['description'];
+		$this->userId = $data['userId'];
+		$this->device = $data['device'];
+		$this->tableEventLogs = $data['tableEventLogs'];
+	}
 
     /**
      * Get id

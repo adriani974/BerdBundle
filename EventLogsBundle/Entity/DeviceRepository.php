@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityRepository;
 class DeviceRepository extends EntityRepository
 {
 	/**
-	*	Cette fonction a pour objectif de trouver dans la table Device le deviceId passer comme argument
+	* Cette fonction a pour objectif de trouver dans la table Device le deviceId passer comme argument.
+	* @param  string deviceId le deviceId qu'on souhaite rechercher.
+	* @return response retourne l'id du résultat. 
 	*/
 	public function findByDeviceInTable($deviceId){
 		$query = $this->getEntityManager()
@@ -27,6 +29,6 @@ class DeviceRepository extends EntityRepository
 			$response = null;
 		}
 		
-		return $response;
+        return $response;
 	}
 }

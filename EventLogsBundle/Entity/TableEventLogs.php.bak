@@ -30,6 +30,20 @@ class TableEventLogs
      * @var string
      */
     private $type;
+	
+	/**
+	* @var array
+	*/
+	private $data;
+	
+	/**
+	* TableEventLogs Constructor
+	*/
+	public function __construct($data = array()){
+		$this->type = $data['type'];
+		
+		$this->action = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
 
     /**
@@ -54,6 +68,7 @@ class TableEventLogs
     {
         return $this->type;
     }
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -64,7 +79,7 @@ class TableEventLogs
      */
     public function __construct()
     {
-        $this->action = new \Doctrine\Common\Collections\ArrayCollection();
+        
     }
 
     /**
@@ -79,6 +94,11 @@ class TableEventLogs
 
         return $this;
     }
+	
+	public function __toString()
+	{
+		return $this->getId().'';
+	}
 
     /**
      * Remove action

@@ -69,6 +69,27 @@ class Device
      */
     private $isWeb;
 
+	/**
+	* @var array
+	*/
+	private $data;
+	
+	/**
+	* Device Constructor
+	*/
+	public function __construct($data = array()){
+		$this->modele = $data['modele'];
+		$this->osArchitecture = $data['osArchitecture'];
+		$this->height = $data['height'];
+		$this->width = $data['width'];
+		$this->netmask = $data['netmask'];
+		$this->userId = $data['userId'];
+		$this->deviceId = $data['deviceId'];
+		$this->manufacturer = $data['manufacturer'];
+		$this->version = $data['version'];
+		$this->others = $data['others'];
+		$this->isWeb = $data['isWeb'];
+	}
 
     /**
      * Get id

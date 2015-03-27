@@ -50,10 +50,8 @@
         {% endfor %}
         </tbody>
     </table>
-		
-			<li>
-			{{ render(controller("BerdEventLogsBundle:Device:new")) }}
-			</li>
+			
+			{{ render(controller("BerdEventLogsBundle:Device:findByDevice")) }}
 		
         <ul>
         <li>

@@ -226,12 +226,14 @@ class DeviceController extends Controller
 
     /**
     * Vérifie si l'appareil connecter est enregistrer dans la table device, si c'est pas le cas 
-    * je l'enregistre dans la table Device et on renvoie la clé primaire
+    * je l'enregistre dans la table Device et on renvoie la clé primaire.
+	* @param string deviceId qu'on souhaite rechercher.
+	* @return device
     */
-    public function findByDeviceAction($deviceId = "deviceId26"){
+    public function findByDeviceAction($deviceId){
         //vérifions si deviceId existe déjà dans ma table Device
-        $findDevice = $this->getDoctrine()->getManager();
-        $response = $findDevice->getRepository('BerdEventLogsBundle:Device')->findByDeviceInTable($deviceId);
+        $em = $this->getDoctrine()->getManager();
+        $response = $em->getRepository('BerdEventLogsBundle:Device')->findByDeviceInTable($deviceId);
 
         if($response == null){//on crée une nouvelle enregistrement dans la table Device
             $entity = new Device();
