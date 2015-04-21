@@ -21,6 +21,8 @@ class PersonnageController extends Controller
      */
     public function indexAction()
     {
+		//$antispam = $this->get('berd_personnage.antispam');
+		
         $em = $this->getDoctrine()->getManager();
 
         $entities1 = $em->getRepository('BerdPersonnageBundle:Personnage')->findAll();

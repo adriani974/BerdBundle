@@ -1,0 +1,23 @@
+Berd\DashboardBundle\Entity\RequestList:
+    type: entity
+    table: null
+    repositoryClass: Berd\DashboardBundle\Entity\RequestListRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        request:
+            type: string
+            length: 255
+        description:
+            type: string
+            length: 255
+        dateCreation:
+            type: date
+        userId:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

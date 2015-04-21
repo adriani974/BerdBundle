@@ -1,0 +1,26 @@
+Berd\DashboardBundle\Entity\Results:
+    type: entity
+    table: null
+    repositoryClass: Berd\DashboardBundle\Entity\ResultsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        fieldList:
+            type: string
+            length: 255
+        dateCreation:
+            type: date
+        request:
+            type: string
+            length: 255
+        userId:
+            type: string
+            length: 255
+    manyToOne:
+        requete:
+            targetEntity: Request
+    lifecycleCallbacks: {  }

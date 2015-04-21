@@ -34,6 +34,24 @@ class Actions
      * @var string
      */
     private $userId;
+	
+	/**
+	* @var array
+	*/
+	private $data;
+	
+	
+	/**
+	* Actions Constructor
+	*/
+	public function __construct($data = array()){
+		$this->nomAction = $data['nomAction'];
+		$this->dateAction = $data['dateAction'];
+		$this->description = $data['description'];
+		$this->userId = $data['userId'];
+		$this->device = $data['device'];
+		$this->tableEventLogs = $data['tableEventLogs'];
+	}
 
     /**
      * Get id
@@ -164,5 +182,38 @@ class Actions
     public function getDevice()
     {
         return $this->device;
+    }
+    /**
+     * @var \Berd\EventLogsBundle\Entity\TableEventLogs
+     */
+    private $tableEventLogs;
+
+
+    /**
+     * Set tableEventLogs
+     *
+     * @param \Berd\EventLogsBundle\Entity\TableEventLogs $tableEventLogs
+     * @return Actions
+     */
+    public function setTableEventLogs(\Berd\EventLogsBundle\Entity\TableEventLogs $tableEventLogs = null)
+    {
+        $this->tableEventLogs = $tableEventLogs;
+
+        return $this;
+    }
+	
+	public function __toString()
+	{
+		return $this->getId().'';
+	}
+
+    /**
+     * Get tableEventLogs
+     *
+     * @return \Berd\EventLogsBundle\Entity\TableEventLogs 
+     */
+    public function getTableEventLogs()
+    {
+        return $this->tableEventLogs;
     }
 }

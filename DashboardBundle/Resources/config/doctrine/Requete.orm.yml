@@ -1,0 +1,34 @@
+Berd\DashboardBundle\Entity\Requete:
+    type: entity
+    table: null
+    repositoryClass: Berd\DashboardBundle\Entity\RequeteRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        body:
+            type: string
+            length: 255
+        requestName:
+            type: string
+            length: 255
+        isEnable:
+            nullable: true
+            type: boolean
+        isFixed:
+            nullable: true
+            type: boolean
+        renderType:
+            nullable: true
+            type: string
+            length: 255
+        userId:
+            type: string
+            length: 255
+    manyToOne:
+        requestList:
+            targetEntity: RequestList
+    lifecycleCallbacks: {  }

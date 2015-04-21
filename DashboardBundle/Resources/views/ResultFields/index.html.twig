@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>ResultFields list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fieldname</th>
+                <th>Fieldvalue</th>
+                <th>Userid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities4 %}
+            <tr>
+                <td><a href="{{ path('resultfields_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.fieldName }}</td>
+                <td>{{ entity.fieldValue }}</td>
+                <td>{{ entity.userId }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('resultfields_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('resultfields_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('resultfields_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

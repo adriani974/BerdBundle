@@ -21,12 +21,14 @@ class PersonnageController extends Controller
      */
     public function indexAction()
     {
+		$antispam = $this->get('berd_personnage.antispam');
+		
         $em = $this->getDoctrine()->getManager();
 
-        $entities2 = $em->getRepository('BerdPersonnageBundle:Personnage')->findAll();
+        $entities1 = $em->getRepository('BerdPersonnageBundle:Personnage')->findAll();
 
         return $this->render('BerdPersonnageBundle:Personnage:index.html.twig', array(
-            'entities2' => $entities2,
+            'entities1' => $entities1,
         ));
     }
     /**

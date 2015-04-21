@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Params</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Paramkey</th>
+                <td>{{ entity.paramKey }}</td>
+            </tr>
+            <tr>
+                <th>Operator</th>
+                <td>{{ entity.operator }}</td>
+            </tr>
+            <tr>
+                <th>Paramvalue</th>
+                <td>{{ entity.paramValue }}</td>
+            </tr>
+            <tr>
+                <th>Userid</th>
+                <td>{{ entity.userId }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('params') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('params_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}
