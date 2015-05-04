@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Sac
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Berd\PersonnageBundle\Entity\SacRepository")
+ * @ORM\Entity(repositoryClass="Berd\PersonnageBundle\Repository\SacRepository")
  */
 class Sac
 {
@@ -34,12 +34,6 @@ class Sac
      * @ORM\Column(name="nomSac", type="string", length=255)
      */
     private $nomSac;
-	
-	/**
-    * @var items
-    * @ORM\ManyToOne(targetEntity="Items")
-    */
-    private $items;
 
 
     /**
@@ -96,28 +90,5 @@ class Sac
     public function getNomSac()
     {
         return $this->nomSac;
-    }
-
-    /**
-     * Set items
-     *
-     * @param \Berd\PersonnageBundle\Entity\Items $items
-     * @return Sac
-     */
-    public function setItems(\Berd\PersonnageBundle\Entity\Items $items = null)
-    {
-        $this->items = $items;
-
-        return $this;
-    }
-
-    /**
-     * Get items
-     *
-     * @return \Berd\PersonnageBundle\Entity\Items 
-     */
-    public function getItems()
-    {
-        return $this->items;
     }
 }

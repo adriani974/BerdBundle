@@ -12,14 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class RequeteRepository extends EntityRepository
 {
-	public function recupererRequete($id){
-	    
-		$query = $this->getEntityManager()
-               ->createQuery('SELECT r FROM DashboardBundle:Requete r WHERE Id= :id ')
-		->setParameter('id', $id);
-		
-		$resultatRequete = $query->getSingleResult();
-		
-        return $resultatRequete;
-	}
+	
 }

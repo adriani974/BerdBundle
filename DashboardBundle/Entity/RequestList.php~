@@ -46,29 +46,6 @@ class RequestList
     }
 
     /**
-     * Set request
-     *
-     * @param string $request
-     * @return RequestList
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    /**
-     * Get request
-     *
-     * @return string 
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
      * Set description
      *
      * @param string $description
@@ -138,7 +115,7 @@ class RequestList
     }
     
     /**
-     * @var \Berd\DashboardBundle\Entity\Request
+     * @var \Berd\DashboardBundle\Entity\Requete
      */
     private $requete;
 
@@ -146,10 +123,10 @@ class RequestList
     /**
      * Set requete
      *
-     * @param \Berd\DashboardBundle\Entity\Request $requete
+     * @param \Berd\DashboardBundle\Entity\Requete $requete
      * @return RequestList
-     */
-    public function setRequete(\Berd\DashboardBundle\Entity\Request $requete = null)
+    */
+    public function setRequete(\Berd\DashboardBundle\Entity\Requete $requete = null)
     {
         $this->requete = $requete;
 
@@ -159,8 +136,8 @@ class RequestList
     /**
      * Get requete
      *
-     * @return \Berd\DashboardBundle\Entity\Request 
-     */
+     * @return \Berd\DashboardBundle\Entity\Requete 
+    */
     public function getRequete()
     {
         return $this->requete;

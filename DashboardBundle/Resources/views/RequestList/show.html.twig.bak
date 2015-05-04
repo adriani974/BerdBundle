@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <th>Datecreation</th>
-                <td>{{ entity.dateCreation|date('Y-m-d H:i:s') }}</td>
+                <td>{{ entity.dateCreation|date('d-m-Y') }}</td>
             </tr>
             <tr>
                 <th>Userid</th>

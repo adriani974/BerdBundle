@@ -12,12 +12,15 @@ Berd\DashboardBundle\Entity\ResultFields:
         fieldName:
             type: string
             length: 255
+            nullable: true
         fieldValue:
             type: string
             length: 255
+            nullable: true
         userId:
             type: string
             length: 255
+            nullable: true
     manyToOne:
         results:
             targetEntity: Results

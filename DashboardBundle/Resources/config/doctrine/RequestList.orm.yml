@@ -12,12 +12,16 @@ Berd\DashboardBundle\Entity\RequestList:
         requestListName:
             type: string
             length: 255
+            nullable: true
         description:
             type: string
             length: 255
+            nullable: true
         dateCreation:
             type: date
+            nullable: true
         userId:
             type: string
             length: 255
+            nullable: true
     lifecycleCallbacks: {  }

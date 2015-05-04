@@ -12,14 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class RequeteRepository extends EntityRepository
 {
-	public function recupererRequete($id){
-	    
-		$query = $this->getEntityManager()
-               ->createQuery('SELECT r FROM DashboardBundle:Requete r WHERE ')
-		->setParameter('id', $id);
-		
-		$resultatRequete = $query->getSingleResult();
-		
-        return $resultatRequete;
-	}
+	public function changerBody($id, $body)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BerdDashboardBundle:Requete')->find($id);
+		$entity->setBody($body);
+        $em->persist($entity);
+        $em->flush();
+    }
 }

@@ -15,7 +15,7 @@ class RequestListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('requestListName')
+            ->add('request')
             ->add('description')
             ->add('dateCreation')
             ->add('userId')

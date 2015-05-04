@@ -1,0 +1,53 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>RequestList plus requete</h1>
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Requete</th>
+                <th>Description</th>
+                <th>Datecreation</th>
+                <th>Userid</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities1 %}
+            <tr>
+                <td><a href="{{ path('requestlist_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.requete }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('d-m-Y') }}{% endif %}</td>
+                <td>{{ entity.userId }}</td>
+            </tr>
+        {% endfor %}
+		
+		<table border="2" id="table_consulter">
+			<tr>
+				<td bgcolor="blue"><font color="white" >Id</font></td>
+				<td bgcolor="blue"><font color="white" >Body</font></td>
+				<td bgcolor="blue"><font color="white" >requestName</font></td>
+				<td bgcolor="blue"><font color="white" >isEnable</font></td>
+				<td bgcolor="blue"><font color="white" >isFixed</font></td>
+				<td bgcolor="blue"><font color="white" >renderType</font></td>
+				<td bgcolor="blue"><font color="white" >userId</font></td>
+				<td bgcolor="blue"><font color="white" >requestListId</font></td>
+			</tr>
+		{% for entity2 in entities2 %}
+			<tr>
+				<td>{{ entity2.id }}</td>
+				<td>{{ entity2.body }}</td>
+				<td>{{ entity2.requestName }}</td>
+				<td>{{ entity2.isEnable }}</td>
+				<td>{{ entity2.isFixed }}</td>
+				<td>{{ entity2.renderType }}</td>
+				<td>{{ entity2.userId }}</td>
+				<td>{{ entity2.requestList }}</td>
+			</tr>
+		{% endfor %}
+		</table><br>
+			{{ render(controller("BerdDashboardBundle:RequestList:recupRequeteAction")) }}
+        </tbody>
+    </table>
+    {% endblock %}

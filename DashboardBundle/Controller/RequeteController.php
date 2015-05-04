@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Berd\DashboardBundle\Entity\Requete;
+use Berd\DashboardBundle\Entity\Params;
 use Berd\DashboardBundle\Form\RequeteType;
 
 /**
@@ -17,292 +18,104 @@ use Berd\DashboardBundle\Form\RequeteType;
  */
 class RequeteController extends Controller
 {
-	$operateur = "";
-	$listeParams = "";
-	$key = 0; $operator = 0; $value = 0;
-	$resultat = "";
-	$tabCorpRequete = "";
-	$tabParamsRequete = "";
-	$corpRequete = "";
-	$nbMotClee = 0;
-	$dernierFois = false;
+	/**
+	* @return une liste d'opérateur
+	*/
+	function getOperators(){
+		return ['=','<=','<','>','!='];
+	}
 	
 	/**
-	* Cette fonction permet d'extraire d'une requête le corp de la requête et ses paramêtres.
-	* TODO cette fonction fonctionnent seulement si la synthaxe DQL est bien respecter,
-	* les deux points annonçant un paramètre devant être coller à ce dernier.
-	* @param requete correspond à une requête DQL de type String.
-	**/
-	function dissocierRequete($requete){
-		global $nbMotClee, $key, $operator, $value, $resultat, $listeParams, $corpRequete, $dernierFois, $tabCorpRequete, $tabParamsRequete;
-		$nbParams = 0;
-		$nbMotClee = compterMotClee($requete);
-		echo " le nombre totale de mot clee est de :: $nbMotClee<br><br>";
-		if($nbMotClee == 0){
-		 echo "$requete";
-		 
-		}else if($nbMotClee == 1){
-			$posWhere = rechercherLeMot($requete, 'WHERE');
-			
-			$finPosWhere = $posWhere + 5;
-			$resultat = separerRequete($requete, 0, $finPosWhere);
-		    
-			$siRecuperer = recupererKOV($resultat[1]);
-			$corpRequete = recomposerRequete($resultat);
-			
-		}else{
-			$resultat = chercherMotClee($requete);
-			$tabCorpRequete[0] = $resultat[0];
-			
-			for($cpt = 0; $cpt < ($nbMotClee - 1); $cpt++){
-				
-				$requeteSuivante = $resultat[1];
-				$resultat = chercherMotClee($requeteSuivante);
-				$siRecuperer = recupererKOV($resultat[0]);
-			
-				$tabCorpRequete[$cpt+1] = $resultat[0];
-				$tailleListeParams = sizeof($listeParams);
-				
-				if($siRecuperer){
-					if($tailleListeParams > 1){
-						$tabParamsRequete[$nbParams] = $listeParams;
-						$nbParams++;
-					}
-					$key++; $operator++; $value++;
+	 * A APPELLER DANS CREATEACTION EN PASSANT COMME PARAMETRE LA REQUETE ET REQUESTLISTID
+     * @Route("/recupererParams", name="_recupererParams")
+     */
+	 function decouperRequeteAction($stringTeste, $requeteId){
+		//Sépare le corps des parametres
+		$firstSplit = explode('WHERE',$stringTeste);
+		//Separe les mots dans la partie parametre et stockage dans des tableaux
+		$secondSplit = explode(' ',$firstSplit[1]);
+		$requestParams = [];
+		$params = [];
+		$requestParams['requestBody'] = $stringTeste;
+		$cpt = 0;
+		$nbFields = 0;
+		
+		foreach($secondSplit as $segment){
+			if( in_array( $segment , $this->getOperators()) ){
+				$params['operator'] = $segment;
+			}
+			else{
+				if(strpos($segment,':') !== false){
+					if(strpos($segment,'(') !== false){//si des valeurs sont trouver on les récupèrent
+						$recupValue = explode('(',$segment);
+						$params['field'] = $recupValue[0];
+						$recupValue = explode(')', $recupValue[1]);
+						$params['value'] = $recupValue[0];
+						$secondSplit[$cpt] = $params['field'];
+						array_push($requestParams, $params);
+						unset($params);
+						unset($recupValue);
+						$nbFields++;
+						
+					}else{//on récupère seulement le paramètre
+						$params['field'] = $segment;
+						array_push($requestParams, $params);
+						unset($params);
+						$nbFields++;
+					}	
 				}
-			}
-			
-			$dernierFois = true;
-			recupererKOV($resultat[1]);
-			$tabCorpRequete[$cpt+1] = $resultat[1];
-			$tabParamsRequete[$nbParams] = $listeParams;
-			$corpRequete = recomposerRequete($tabCorpRequete);
+			} 
+			$cpt++;
 		}
+		//recompose le corp de la requête
+		$parti1 = $firstSplit[0];
+		$parti2 = implode(' ', $secondSplit);
+		$requestParams['requestBody'] = $parti1.' WHERE '.$parti2; 
+		
+		$this->saveParamsAction($requestParams, $requeteId, $nbFields);
+		
+		//var_dump($requestParams);
+		
+		return array('$requestParams' => $requestParams,);
 	}
-	
-	/**
-	* Cette fonction recupère la clée, l'opérateur et la valeur qui forme ensemble un paramètre.
-	* @param tableauResultat correspond au tableau qu'ont souhaite vérifier si il y a un paramètre à récuperer.
-	* @return siTrouver retourne vrais si un paramètre est trouver sinon retourne faux.
-	*/
-	function recupererKOV($tableauResultat){
-		global $operateur, $listeParams, $key, $operator, $value, $resultat, $nbMotClee, $dernierFois;
-		$siTrouver = false;
-		
-		$siOperateurTrouver = chercherOperateur($tableauResultat);
-		
-		if($siOperateurTrouver){
-			$result = decomposerRequete(" ", $tableauResultat);
-			$tailleResult = sizeof($result);
-			
-			for($cpt = 0; $cpt < $tailleResult; $cpt++){
-			    $motRechercher = $result[$cpt];
-				if(chercherOpDansTableau($motRechercher)){
-					$listeParams[0] = $result[$cpt - 1];
-					$listeParams[1] = $result[$cpt];
-					$listeParams[2] = $result[$cpt + 1];
-					
-					//jenregistre les nouvelles valeurs dans le result
-					$result[$cpt - 1] = " key".$key." ";
-					$result[$cpt] = " operator".$operator." ";
-					$result[$cpt + 1] = " value".$value." ";
-					
-					//je recompose la requete decomposer
-					if($nbMotClee == 1 or $dernierFois == true){
-						$resultat[1] = recomposerRequete($result);
-					}else{
-						$resultat[0] = recomposerRequete($result);
-					}
-					
-					break;
-				}
-			}
-			$siTrouver = true;
-		}
-		
-		return $siTrouver;
-	}
-	
-	/**
-	* Comptent le nombre de mot clée que la requête possède.
-	* @param requete la requête qu'on souhaite vérifier le nombre de mot clée.
-	* @return le nombre de mot clee en tout retrouver
-	*/
-	function compterMotClee($requete){
-		$listeMotClee = ['WHERE', 'WITH', 'AND', 'JOIN'];
-		$longueurListe = sizeof($listeMotClee);
-		$nbTrouver = 0;
-		
-		for($cpt = 0; $cpt < $longueurListe; $cpt++){
-			$nbTrouver = $nbTrouver + substr_count($requete, $listeMotClee[$cpt] );
-		}
 
-		return $nbTrouver;
+	/**
+	*  cette fonction sauvegarde les params dans la table params
+	*  @param requestParams est un tableau contenant les valeurs à sauvegarder
+	*  @param $requeteId est l'id de l'entité requete
+	*/
+	function saveParamsAction($requestParams, $requeteId, $nbFields){
+		
+		for($cpt = 0; $cpt < $nbFields; $cpt++){
+			$em= $this->getDoctrine()->getManager();
+			$entity = new Params();
+			$entity->setParamKey($requestParams[$cpt]['field']);
+			if(isset($requestParams[$cpt]['value']) != null){$entity->setParamValue($requestParams[$cpt]['value']);}
+			$entity->setOperator($requestParams[$cpt]['operator']);
+			$entity->setRequete($requeteId);
+			$entity->setUserId('7OwNzMxcQD');
+			$em->persist($entity);
+			$em->flush();
+		}
+		
 	}
 	
 	/**
-	* Cherche un opérateur dans un tableau.
-	* @param tableau dans lequels ont effecturera la recherche.
-	* @return operateurTrouver retourne vraie si un opérateur est trouver sinon retourne faux.
+	*	met à jour le champ body.
+	*  @param id correspond à l'id de l'enregistrement qu'on souhaite mettre à jour
+	*  @param $body correspond à la nouvelle valeur qu'on souhaite sauvegarder
 	*/
-	function chercherOperateur($tableau){
-		global $operateur;
-		$listeOperateur = ['=', '!=', '==', '===', '>=', '<=', '>', '<'];
-		$longueurListe = sizeof($listeOperateur);
-		$operateurTrouver = false;
-		
-		for($cpt = 0; $cpt < $longueurListe; $cpt++){
-			$trouver = rechercherLeMot($tableau, $listeOperateur[$cpt]);
-			if($trouver != 0){
-				$operateur = $listeOperateur[$cpt];
-				$operateurTrouver = true;
-				break;	
-			}
-		}
-		
-		return $operateurTrouver;
-	}
-	
-	/**
-	* Idem que chercherOperateur, Cherche un opérateur dans un tableau.
-	* @param tableau dans lequels ont effecturera la recherche.
-	* @return operateurTrouver retourne vraie si un opérateur est trouver sinon retourne faux.
-	*/
-	function chercherOpDansTableau($tableau){
-		global $operateur;
-		$listeOperateur = ['=', '!=', '==', '===', '>=', '<=', '>', '<'];
-		$longueurListe = sizeof($listeOperateur);
-		$operateurTrouver = false;
-		
-		for($cpt = 0; $cpt < $longueurListe; $cpt++){
-			if(stristr($tableau, $listeOperateur[$cpt]) == TRUE) {
-				$operateurTrouver = true;	
-			}
-		}
-		return $operateurTrouver;
-	}
-	
-	/**
-	* Recherche un motClee dans une requête.
-	* @param requete la requête qui servira de recherche.
-	* @return resultat retourne un tableau contenant la requête séparer en deux parties.
-	*/
-	function chercherMotClee($requete){
-		$listeMotClee = ['WHERE', 'WITH', 'AND', 'JOIN'];
-		$listeVariable = [$posWhere = 0, $posWith = 0, $posAnd = 0, $posJoin = 0];
-		$longueurListe = sizeof($listeMotClee);
-		
-		
-		for($cpt = 0; $cpt < $longueurListe; $cpt++){
-			$listeVariable[$cpt] = rechercherLeMot($requete, $listeMotClee[$cpt]);
-		}
-		
-		for($cpt = 0; $cpt < $longueurListe; $cpt++){
-			if($listeVariable[$cpt] == null){
-				$listeVariable[$cpt] = 0;
-			}
-		}
-		
-		$posElement = 0;
-		asort($listeVariable);
-		foreach ($listeVariable as $key => $val) {
-		   if($val != 0){
-			$premierElement = $listeVariable[$key];
-			$posElement = $key;
-			break;
-		   } 
-        }
+	function updateFieldBodyAction($id, $body)
+    {
+        $em = $this->getDoctrine()->getManager();
 
-		$longueurMot = strlen($listeMotClee[$posElement]);
-		$finPos = $premierElement + $longueurMot;
-		$resultat = separerRequete($requete, 0, $finPos);
-		
-		return $resultat;
-	}
+        $entity = $em->getRepository('BerdDashboardBundle:Requete')->find($id);
+		$entity->setBody($body);
+        $em->persist($entity);
+        $em->flush();
+    }
 	
-	/**
-	* recherche un mot dans une phrase et retourne un boolean.
-	* @param myString le texte dans lequel ont va rechercher un mot en particulier
-	* @param findMe le mot qu'on souhaite rechercher
-	* @return siTrouver retourne vrais si une occurence est trouver sinon retourne faux
-	*/
-	function rechercherUnMot($myString, $findMe){
-		$pos = strripos($myString, $findMe);
-		
-		if($pos == true){
-			//echo "c trouver ($findMe) dans ($myString) a la position ($pos)";
-			$siTrouver = true;
-		}else{
-			//echo "c pas trouver ($findMe) dans ($myString)";
-			$siTrouver = false;
-		}
-		
-		return $siTrouver;
-	}
-	
-	/**
-	* recherche un mot dans une phrase et retourne sa position.
-	* @param myString le texte dans lequel ont va rechercher un mot en particulier
-	* @param findMe le mot qu'on souhaite rechercher
-	* @return trouverPos retourne la position de l'occurence trouver
-	*/
-	function rechercherLeMot($myString, $findMe){
-		$pos = stripos($myString, $findMe);
-		$trouverPos = 0;
-		
-		if($pos == true){
-			//echo "c trouver ($findMe) dans ($myString) a la position ($pos)<br>";
-			$trouverPos = $pos;
-			
-		}else{
-			//echo "c pas trouver ($findMe) dans ($myString) a la position ($pos) <br>";
-			$trouverPos = $pos;
-		}
-		
-		return $trouverPos;
-	}
-	
-	/**
-	* Cette fonction sépare la requête en deux partis.
-	* @param requete la requete à découper.
-	* @param position la position ou on souhaite découper la requête.
-	* @param longueur la longueur du texte qu'on souhaite découper.
-	* @return $tabParti retourne un tableau contenant deux string.
-	*/
-	function separerRequete($requete, $position, $longueur){
-		$premierParti = substr($requete, $position, $longueur);
-		$secondParti = substr($requete, $longueur);
-		
-		return $tabParti = [$premierParti, $secondParti];
-	}
-	
-	/**
-	* Permet de décomposer un texte selon un séparateur spécifié en plusieurs morceaux stocker dans un tableau.
-	* @param separateur détermine par rapport à quoi on souhaite découper le texte.
-	* @param requete est le texte à découper 
-	* @return resultat retourne un tableau contenant la requete découper
-	*/
-	function decomposerRequete($separateur, $requete){
-		$resultat = "";
-		
-		$resultat = explode($separateur, $requete);
-		
-		return $resultat;  
-	}
-	
-	/**
-	* Recompose un texte avec des fragments de texte
-	* @param requete de type tableau contient des morceaux de texte qu'on souhaite rassembler
-	* @return resultat retourne un String d'un ensemble de texte recomposer.
-	*/
-	function recomposerRequete($requete){
-		$resultat = "";
-		
-		$resultat = implode($requete);
-		
-		return $resultat;
-	}
-	
+	////////////////////////////////CRUD////////////////////////////////////////////////////////
     /**
      * Lists all Requete entities.
      *
@@ -323,7 +136,7 @@ class RequeteController extends Controller
     /**
      * Creates a new Requete entity.
      *
-     * @Route("/", name="requete_create")
+     * @Route("/create", name="requete_create")
      * @Method("POST")
      * @Template("BerdDashboardBundle:Requete:new.html.twig")
      */
@@ -332,11 +145,26 @@ class RequeteController extends Controller
         $entity = new Requete();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+		
+		//récupération des valeurs issue du formulaire
+		$stringTeste = $entity->getBody();
+		
+		
+		//appel de la fonction : 
+		
+		$entity->setUserId('7OwNzMxcQD');
+		
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+			
+			$requestParams = $this->decouperRequeteAction($stringTeste, $entity);
+			$requestParams2 = array_shift($requestParams);
+			$body = array_shift($requestParams2);
+			$requeteId = $entity->getId();
+			
+			$this->updateFieldBodyAction($requeteId, $body);
 
             return $this->redirect($this->generateUrl('requete_show', array('id' => $entity->getId())));
         }

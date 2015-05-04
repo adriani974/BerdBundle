@@ -18,10 +18,12 @@ Berd\DashboardBundle\Entity\Params:
         paramValue:
             type: string
             length: 255
+            nullable: true
         userId:
             type: string
             length: 255
+            nullable: true
     manyToOne:
         requete:
-            targetEntity: Request
+            targetEntity: Requete
     lifecycleCallbacks: {  }

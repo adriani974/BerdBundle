@@ -20,7 +20,7 @@
                 <td><a href="{{ path('requestlist_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.request }}</td>
                 <td>{{ entity.description }}</td>
-                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('d-m-Y') }}{% endif %}</td>
                 <td>{{ entity.userId }}</td>
                 <td>
                 <ul>

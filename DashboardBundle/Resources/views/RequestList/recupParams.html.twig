@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>RecupParams</h1>
+    <table class="records_list">
+        <tbody>
+		<table border="2" id="table_consulter">
+			<tr>
+				<td bgcolor="blue"><font color="white" >Id</font></td>
+				<td bgcolor="blue"><font color="white" >paramKey</font></td>
+				<td bgcolor="blue"><font color="white" >operator</font></td>
+				<td bgcolor="blue"><font color="white" >paramValue</font></td>
+			</tr>
+		{% for entity2 in entity %}
+			<tr>
+				<td>{{ entity2.id }}</td>
+				<td>{{ entity2.paramKey }}</td>
+				<td>{{ entity2.paramValue}}</td>
+			</tr>
+		{% endfor %}
+		</table><br>
+        </tbody>
+    </table>
+    {% endblock %}

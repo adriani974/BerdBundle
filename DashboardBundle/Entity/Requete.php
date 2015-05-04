@@ -220,4 +220,9 @@ class Requete
     {
         return $this->requestList;
     }
+	
+	public function __toString()
+	{
+		return $this->getId().'';
+	}
 }

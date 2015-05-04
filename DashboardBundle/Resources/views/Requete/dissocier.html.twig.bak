@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+{% block body -%}
+    <h1>Entrez la requête à dissocier</h1>
+	<input type="text" name="firstname"><br>
+	<h1>choisir utilisateur</h1> 
+		<select name="categorie">
+			<OPTION>userId1
+			<OPTION>userId2
+			<OPTION>userId3
+			<OPTION>userId4
+			<OPTION>userId5
+		</select><br>
+	<h1>confirmer votre choix</h1>
+	message de confirmation<br>
+	<input type="submit" value="Valider"/>
+{% endblock %}
+

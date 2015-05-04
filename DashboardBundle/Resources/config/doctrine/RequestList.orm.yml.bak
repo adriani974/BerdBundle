@@ -9,7 +9,7 @@ Berd\DashboardBundle\Entity\RequestList:
             generator:
                 strategy: AUTO
     fields:
-        request:
+        requestListName:
             type: string
             length: 255
         description:

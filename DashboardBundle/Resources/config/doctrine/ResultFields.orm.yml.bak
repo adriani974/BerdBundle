@@ -19,6 +19,6 @@ Berd\DashboardBundle\Entity\ResultFields:
             type: string
             length: 255
     manyToOne:
-        result:
+        results:
             targetEntity: Results
     lifecycleCallbacks: {  }

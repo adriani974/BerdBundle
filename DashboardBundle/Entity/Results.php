@@ -165,7 +165,7 @@ class Results
         return $this->resultFields;
     }
     /**
-     * @var \Berd\DashboardBundle\Entity\Request
+     * @var \Berd\DashboardBundle\Entity\Requete
      */
     private $requete;
 
@@ -173,10 +173,10 @@ class Results
     /**
      * Set requete
      *
-     * @param \Berd\DashboardBundle\Entity\Request $requete
+     * @param \Berd\DashboardBundle\Entity\Requete $requete
      * @return Results
      */
-    public function setRequete(\Berd\DashboardBundle\Entity\Request $requete = null)
+    public function setRequete(\Berd\DashboardBundle\Entity\Requete $requete = null)
     {
         $this->requete = $requete;
 
@@ -186,10 +186,14 @@ class Results
     /**
      * Get requete
      *
-     * @return \Berd\DashboardBundle\Entity\Request 
+     * @return \Berd\DashboardBundle\Entity\Requete 
      */
     public function getRequete()
     {
         return $this->requete;
     }
+	
+	public function __toString(){
+		return $this->getId().'';
+	}
 }

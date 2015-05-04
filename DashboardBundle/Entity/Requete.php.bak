@@ -5,9 +5,9 @@ namespace Berd\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Request
+ * Requete
  */
-class Request
+class Requete
 {
     /**
      * @var integer
@@ -44,6 +44,11 @@ class Request
      */
     private $userId;
 
+    /**
+     * @var \Berd\DashboardBundle\Entity\RequestList
+     */
+    private $requestList;
+
 
     /**
      * Get id
@@ -59,7 +64,7 @@ class Request
      * Set body
      *
      * @param string $body
-     * @return Request
+     * @return Requete
      */
     public function setBody($body)
     {
@@ -82,7 +87,7 @@ class Request
      * Set requestName
      *
      * @param string $requestName
-     * @return Request
+     * @return Requete
      */
     public function setRequestName($requestName)
     {
@@ -105,7 +110,7 @@ class Request
      * Set isEnable
      *
      * @param boolean $isEnable
-     * @return Request
+     * @return Requete
      */
     public function setIsEnable($isEnable)
     {
@@ -128,7 +133,7 @@ class Request
      * Set isFixed
      *
      * @param boolean $isFixed
-     * @return Request
+     * @return Requete
      */
     public function setIsFixed($isFixed)
     {
@@ -151,7 +156,7 @@ class Request
      * Set renderType
      *
      * @param string $renderType
-     * @return Request
+     * @return Requete
      */
     public function setRenderType($renderType)
     {
@@ -174,7 +179,7 @@ class Request
      * Set userId
      *
      * @param string $userId
-     * @return Request
+     * @return Requete
      */
     public function setUserId($userId)
     {
@@ -192,73 +197,12 @@ class Request
     {
         return $this->userId;
     }
-    /**
-     * @var \Berd\DashboardBundle\Entity\Params
-     */
-    private $params;
-
-    /**
-     * @var \Berd\DashboardBundle\Entity\Results
-     */
-    private $results;
-
-
-    /**
-     * Set params
-     *
-     * @param \Berd\DashboardBundle\Entity\Params $params
-     * @return Request
-     */
-    public function setParams(\Berd\DashboardBundle\Entity\Params $params = null)
-    {
-        $this->params = $params;
-
-        return $this;
-    }
-
-    /**
-     * Get params
-     *
-     * @return \Berd\DashboardBundle\Entity\Params 
-     */
-    public function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * Set results
-     *
-     * @param \Berd\DashboardBundle\Entity\Results $results
-     * @return Request
-     */
-    public function setResults(\Berd\DashboardBundle\Entity\Results $results = null)
-    {
-        $this->results = $results;
-
-        return $this;
-    }
-
-    /**
-     * Get results
-     *
-     * @return \Berd\DashboardBundle\Entity\Results 
-     */
-    public function getResults()
-    {
-        return $this->results;
-    }
-    /**
-     * @var \Berd\DashboardBundle\Entity\RequestList
-     */
-    private $requestList;
-
 
     /**
      * Set requestList
      *
      * @param \Berd\DashboardBundle\Entity\RequestList $requestList
-     * @return Request
+     * @return Requete
      */
     public function setRequestList(\Berd\DashboardBundle\Entity\RequestList $requestList = null)
     {

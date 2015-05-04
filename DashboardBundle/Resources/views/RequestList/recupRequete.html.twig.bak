@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>RecupRequete</h1>
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Requete</th>
+                <th>Description</th>
+                <th>Datecreation</th>
+                <th>Userid</th>
+            </tr>
+        </thead>
+        <tbody>
+		<table border="2" id="table_consulter">
+			<tr>
+				<td bgcolor="blue"><font color="white" >Id</font></td>
+				<td bgcolor="blue"><font color="white" >Body</font></td>
+				<td bgcolor="blue"><font color="white" >requestName</font></td>
+			</tr>
+		{% for entity2 in entity %}
+			<tr>
+				<td>{{ entity2.id }}</td>
+				<td>{{ entity2.body }}</td>
+				<td>{{ entity2.requestName}}</td>
+			</tr>
+		{% endfor %}
+		</table><br>
+        </tbody>
+    </table>
+    {% endblock %}

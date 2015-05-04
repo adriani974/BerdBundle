@@ -44,7 +44,6 @@ class Items
      */
     private $volume;
 
-
     /**
      * Get id
      *
@@ -145,28 +144,5 @@ class Items
     public function getVolume()
     {
         return $this->volume;
-    }
-
-    /**
-     * Set items
-     *
-     * @param \Berd\PersonnageBundle\Entity\Items $items
-     * @return Items
-     */
-    public function setItems(\Berd\PersonnageBundle\Entity\Items $items = null)
-    {
-        $this->items = $items;
-
-        return $this;
-    }
-
-    /**
-     * Get items
-     *
-     * @return \Berd\PersonnageBundle\Entity\Items 
-     */
-    public function getItems()
-    {
-        return $this->items;
     }
 }

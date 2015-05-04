@@ -22,6 +22,7 @@ Berd\DashboardBundle\Entity\Requete:
             nullable: true
             type: boolean
         renderType:
+            nullable: true
             type: string
             length: 255
         userId:

@@ -26,6 +26,7 @@ Berd\DashboardBundle\Entity\Requete:
             type: string
             length: 255
         userId:
+            nullable: true
             type: string
             length: 255
     manyToOne:

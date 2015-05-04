@@ -137,7 +137,7 @@ class Params
         return $this->userId;
     }
     /**
-     * @var \Berd\DashboardBundle\Entity\Requete
+     * @var \Berd\DashboardBundle\Entity\Request
      */
     private $requete;
 
@@ -158,7 +158,7 @@ class Params
     /**
      * Get requete
      *
-     * @return \Berd\DashboardBundle\Entity\Requete 
+     * @return \Berd\DashboardBundle\Entity\Request 
      */
     public function getRequete()
     {

@@ -14,13 +14,15 @@ Berd\DashboardBundle\Entity\Params:
             length: 255
         operator:
             type: string
-            length: '150'
+            length: 150
         paramValue:
             type: string
             length: 255
+            nullable: true
         userId:
             type: string
             length: 255
+            nullable: true
     manyToOne:
         requete:
             targetEntity: Requete

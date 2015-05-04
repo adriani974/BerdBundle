@@ -32,3 +32,4 @@ class DeviceRepository extends EntityRepository
         return $response;
 	}
 }
+ 
