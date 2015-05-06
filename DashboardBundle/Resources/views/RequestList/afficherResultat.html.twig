@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}	
+    <h1>Resultat Requete</h1>
+       <tbody>
+		{% for table in tabEntity %}
+			<table border="2" id="table">
+				<tr>
+				    {% set tabKey = table['key'] %}
+					{% for key in tabKey %}    
+						<td bgcolor="blue"><font color="white">{{ key }}</font></td>
+					{% endfor %}
+				</tr>
+				{% set nbChamp = table['key'] | length %}
+				{% set cpt = 0 %}
+				{% set tabValue = table['value'] %}
+					{% for value in tabValue %}	
+					
+						{% if (cpt) == (nbChamp) %}
+							<tr>
+							{% set cpt = 0 %}
+						{% endif %}
+						
+							<td>{{ value }}</td>
+							
+						{% if (cpt) == (nbChamp) %}
+							</tr>
+						{% endif %}
+						
+						{% set cpt = cpt + 1 %}
+					{% endfor %}
+			</table><br>
+		{% endfor %}
+       </tbody>
+{% endblock %}

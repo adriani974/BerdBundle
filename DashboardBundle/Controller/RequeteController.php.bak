@@ -25,24 +25,18 @@ class RequeteController extends Controller
 		return ['=','<=','<','>','!='];
 	}
 	
-	function sansDoublePoint($string){
-		$longueur = strlen($string) - 1;
-		$string = substr($string, 1, $longueur);
-		return $string;
-	}
-	
 	/**
-	 * A APPELLER DANS CREATEACTION EN PASSANT COMME PARAMETRE LA REQUETE ET REQUESTLISTID
+	 * cette fonction est appeler dans createaction en passant comme parametre la requete et requestListId
      * @Route("/recupererParams", name="_recupererParams")
      */
-	 function decouperRequeteAction($stringTeste, $requeteId){
+	 function decouperRequeteAction($requete, $requeteId){
 		//Sépare le corps des parametres
-		$firstSplit = explode('WHERE',$stringTeste);
+		$firstSplit = explode('WHERE',$requete);
 		//Separe les mots dans la partie parametre et stockage dans des tableaux
 		$secondSplit = explode(' ',$firstSplit[1]);
 		$requestParams = [];
 		$params = [];
-		$requestParams['requestBody'] = $stringTeste;
+		$requestParams['requestBody'] = $requete;
 		$cpt = 0;
 		$nbFields = 0;
 		
@@ -54,7 +48,7 @@ class RequeteController extends Controller
 				if(strpos($segment,':') !== false){
 					if(strpos($segment,'(') !== false){//si des valeurs sont trouver on les récupèrent
 						$recupValue = explode('(',$segment);
-						$params['field'] = $this->sansDoublePoint($recupValue[0]);
+						$params['field'] = $recupValue[0];
 						$recupValue = explode(')', $recupValue[1]);
 						$params['value'] = $recupValue[0];
 						$secondSplit[$cpt] = $params['field'];
@@ -64,7 +58,7 @@ class RequeteController extends Controller
 						$nbFields++;
 						
 					}else{//on récupère seulement le paramètre
-						$params['field'] = $this->sansDoublePoint($segment);
+						$params['field'] = $segment;
 						array_push($requestParams, $params);
 						unset($params);
 						$nbFields++;

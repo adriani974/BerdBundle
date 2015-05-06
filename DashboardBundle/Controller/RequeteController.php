@@ -22,21 +22,21 @@ class RequeteController extends Controller
 	* @return une liste d'opérateur
 	*/
 	function getOperators(){
-		return ['=','<=','<','>','!='];
+		return [ '=', '<=', '>=', '<', '>', '!='];
 	}
 	
 	/**
-	 * A APPELLER DANS CREATEACTION EN PASSANT COMME PARAMETRE LA REQUETE ET REQUESTLISTID
+	 * cette fonction est appeler dans createaction en passant comme parametre la requete et requestListId
      * @Route("/recupererParams", name="_recupererParams")
      */
-	 function decouperRequeteAction($stringTeste, $requeteId){
+	 function decouperRequeteAction($requete, $requeteId){
 		//Sépare le corps des parametres
-		$firstSplit = explode('WHERE',$stringTeste);
+		$firstSplit = explode('WHERE',$requete);
 		//Separe les mots dans la partie parametre et stockage dans des tableaux
 		$secondSplit = explode(' ',$firstSplit[1]);
 		$requestParams = [];
 		$params = [];
-		$requestParams['requestBody'] = $stringTeste;
+		$requestParams['requestBody'] = $requete;
 		$cpt = 0;
 		$nbFields = 0;
 		
