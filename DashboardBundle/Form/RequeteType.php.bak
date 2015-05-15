@@ -20,7 +20,7 @@ class RequeteType extends AbstractType
             ->add('isEnable')
             ->add('isFixed')
 			->add('renderType', 'choice', array(
-									'choices'   => array('Line' => 'Line', 'Bar' => 'Bar', 'Radar' => 'Radar', 'PolarArea' => 'PolarArea', 'Pie' => 'Pie', 'Doughnut' => 'Doughnut'),
+									'choices'   => array('m' => 'Masculin', 'f' => 'Féminin'),
 									'required'  => false,
 								))
             ->add('userId')

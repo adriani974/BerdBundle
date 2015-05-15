@@ -19,14 +19,16 @@ use Berd\DashboardBundle\Form\RequeteType;
 class RequeteController extends Controller
 {
 	/**
+	* fonction contenant une liste d'opérateur
 	* @return une liste d'opérateur
 	*/
 	function getOperators(){
-		return [ '=', '<=', '>=', '<', '>', '!='];
+		return [ '=', '<=', '>=', '<', '>', '!=', '<>'];
 	}
 	
 	/**
-	 * cette fonction est appeler dans createaction en passant comme parametre la requete et requestListId
+	 * cette fonction est appeler dans createAction elle permet de recuperer les paramêtres d'une requête
+	 * @param requete la requete sur laquel on extrait les paramêtres
      * @Route("/recupererParams", name="_recupererParams")
      */
 	 function decouperRequeteAction($requete, $requeteId){
@@ -74,8 +76,6 @@ class RequeteController extends Controller
 		
 		$this->saveParamsAction($requestParams, $requeteId, $nbFields);
 		
-		//var_dump($requestParams);
-		
 		return array('$requestParams' => $requestParams,);
 	}
 
@@ -83,6 +83,7 @@ class RequeteController extends Controller
 	*  cette fonction sauvegarde les params dans la table params
 	*  @param requestParams est un tableau contenant les valeurs à sauvegarder
 	*  @param $requeteId est l'id de l'entité requete
+	*  @param nbFields indique le nombre de champs à enregistrer
 	*/
 	function saveParamsAction($requestParams, $requeteId, $nbFields){
 		
@@ -96,8 +97,7 @@ class RequeteController extends Controller
 			$entity->setUserId('7OwNzMxcQD');
 			$em->persist($entity);
 			$em->flush();
-		}
-		
+		}	
 	}
 	
 	/**
@@ -149,9 +149,7 @@ class RequeteController extends Controller
 		//récupération des valeurs issue du formulaire
 		$stringTeste = $entity->getBody();
 		
-		
 		//appel de la fonction : 
-		
 		$entity->setUserId('7OwNzMxcQD');
 		
         if ($form->isValid()) {
@@ -169,10 +167,7 @@ class RequeteController extends Controller
             return $this->redirect($this->generateUrl('requete_show', array('id' => $entity->getId())));
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        return array( 'entity' => $entity, 'form'   => $form->createView(), );
     }
 
     /**
@@ -358,7 +353,5 @@ class RequeteController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
-    }
-	
-	
+    }	
 }

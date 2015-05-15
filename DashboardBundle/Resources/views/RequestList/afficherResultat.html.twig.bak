@@ -1,35 +1,186 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}	
-    <h1>Resultat Requete</h1>
-       <tbody>
+<html>
+	<head>
+	   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+		<link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet"> 
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> 
+		<link href="http://cdn.datatables.net/colvis/1.1.2/css/dataTables.colVis.css" rel="stylesheet"> 
+		<link href="http://cdn.datatables.net/colreorder/1.1.3/css/dataTables.colReorder.css" rel="stylesheet">
+		
+		<!-- <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js" type='text/javascript'></script> -->
+		<link rel="stylesheet" href="/web/default/style.min.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	   
+		<h1><center> Resultat requête : Tableau</center></h1>
+	</head>
+   <body>
+		{% set num = 0 %}
 		{% for table in tabEntity %}
-			<table border="2" id="table">
-				<tr>
-				    {% set tabKey = table['key'] %}
-					{% for key in tabKey %}    
-						<td bgcolor="blue"><font color="white">{{ key }}</font></td>
-					{% endfor %}
-				</tr>
+			<table border="4" id="table{{ num }}">
+				<thead>
+					<tr>
+						{% set tabKeys = table['key'] %}
+						{% for key in tabKeys %}    
+							<th>{{ key }}</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
 				{% set nbChamp = table['key'] | length %}
 				{% set cpt = 0 %}
-				{% set tabValue = table['value'] %}
-					{% for value in tabValue %}	
-					
+				{% set tabValues = table['value'] %}
+					{% for value in tabValues %}	
 						{% if (cpt) == (nbChamp) %}
 							<tr>
 							{% set cpt = 0 %}
 						{% endif %}
-						
-							<td>{{ cpt }}{{ value }}</td>
-							
+							<td>{{ value }}</td>	
 						{% if (cpt) == (nbChamp) %}
 							</tr>
 						{% endif %}
-						
 						{% set cpt = cpt + 1 %}
 					{% endfor %}
+				</tbody>
 			</table><br>
+		{% set num = num + 1 %}
 		{% endfor %}
-       </tbody>
-{% endblock %}
+	    <!--  -->
+		<script src="http://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
+		<script src="http://cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js"></script>
+		<script src="http://cdn.datatables.net/colvis/1.1.2/js/dataTables.colVis.min.js"></script>
+		<script src="http://cdn.datatables.net/colreorder/1.1.3/js/dataTables.colReorder.min.js"></script>
+		<style>
+			thead{
+				background-color:#2C3E50;
+				color:white;
+			};
+		</style>
+		<script>
+		var cpt, nbTable = 0;
+		nbTable =  {{ num|json_encode|raw }};
+		
+		//personnalise la couleur des champs et enregistrement
+		function executerDataTable(cpt){
+			var text = '#table'+cpt;
+			
+			return $(document).ready(function(){$(text).dataTable({   
+				"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+						if((iDisplayIndex % 2) == 0){
+							$(nRow).css('background-color', '#566573')
+					
+						}else{
+							$(nRow).css('background-color', '#6B7884')
+						}
+					}
+				});
+			});
+		}
+		
+		for(cpt = 0; cpt < nbTable; cpt++){
+			executerDataTable(cpt);
+		}
+	</script>
+	<h1><center> Resultat requête : Graphique </center></h1>
+	<center><canvas id="chart" width="600" height="400"></canvas></center>
+	
+	<script type="text/javascript">
+		// Get the context of the canvas element we want to select
+		var ctx = document.getElementById("chart").getContext("2d");
+		var tabEntity =  {{ tabEntity|json_encode|raw }};
+		// type de rendu possible
+		var charVersion1 = ['Line', 'Bar', 'Radar'];
+		var charVersion2 = ['PolarArea', 'Pie', 'Doughnut'];
+		//var tab = tabEntity[3]['key'];
+		//var tabLabels = tab;
+		//var tabData = tabEntity[3]['value'];
+		//var tabData2 = tabEntity[3]['value'];
+		var tabLabels = ["January", "February", "March", "April", "May", "June", "July", "August"];
+		var tabData = [65, 59, 80, 81, 56, 55, 40, 30];
+		var tabData2 = [28, 48, 40, 19, 86, 27, 90, 45];
+		/*var data = {
+		labels: tabLabels,
+		datasets: [
+			{
+				label: "My First dataset",
+				fillColor: "rgba(220,220,220,0.2)",
+				strokeColor: "rgba(220,220,220,1)",
+				pointColor: "rgba(220,220,220,1)",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(220,220,220,1)",
+				data: tabData
+			},
+			{
+				label: "My Second dataset",
+				fillColor: "rgba(86,101,115,0.2)",
+				strokeColor: "rgba(86,101,115,1)",
+				pointColor: "rgba(86,101,115,1)",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(86,101,115,1)",
+				data: tabData2
+			}
+		]
+		};*/
+		
+		var data = [
+			{
+				value: 150,
+				color:"#F7464A",
+				highlight: "#FF5A5E",
+				label: tabEntity[3]['key'][3]
+			},
+			{
+				value: 150,
+				color: "#46BFBD",
+				highlight: "#5AD3D1",
+				label: tabEntity[3]['key'][3]
+			},
+			{
+				value: 100,
+				color: "#FDB45C",
+				highlight: "#FFC870",
+				label: tabEntity[3]['key'][3]
+			}
+		]
+		
+		var data = genererDataVersion2(1, tabEntity);
+		choixTypeGraphique(charVersion2[1], data);
+		
+		//****************fonction Javascript***************************************/
+		function genererDataVersion2(indiceRequete, tabEntity){
+			var data = []; var nbLabel, cpt = 0;
+			
+			nbLabel = tabEntity[indiceRequete]['value'].length;
+			
+			for(cpt = 0; cpt < nbLabel; cpt++){
+				var ob = {
+					value: cpt,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: tabEntity[indiceRequete]['key'][cpt]
+				};
+				data.push(ob);
+			}
+			//console.log();
+			return data;
+		}
+		
+		function choixTypeGraphique(choixChart, data){
+			
+			switch(choixChart){
+				case 'Line':		var myChart = new Chart(ctx).Line(data); break;	
+				case 'Bar':			var myChart = new Chart(ctx).Bar(data); break;
+				case 'Radar':		var myChart = new Chart(ctx).Radar(data); break;
+				case 'PolarArea':	var myChart = new Chart(ctx).PolarArea(data); break;
+				case 'Pie':			var myChart = new Chart(ctx).Pie(data); break;
+				case 'Doughnut':	var myChart = new Chart(ctx).Doughnut(data); break;
+			}
+		}	
+	</script>
+	</body>
+</html>

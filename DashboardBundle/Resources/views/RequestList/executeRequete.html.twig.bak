@@ -1,28 +1,205 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}	
-    <h1>RecupRequete</h1>
-       <tbody>
-		{% for table in tabEntity %}
-			<table border="2" id="table">
+<html>
+	<head>
+	   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+       <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+       <link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet"> 
+       <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> 
+       <link href="http://cdn.datatables.net/colvis/1.1.2/css/dataTables.colVis.css" rel="stylesheet"> 
+       <link href="http://cdn.datatables.net/colreorder/1.1.3/css/dataTables.colReorder.css" rel="stylesheet">
+	   
+       <!-- <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js" type='text/javascript'></script> -->
+       <link rel="stylesheet" href="/web/default/style.min.css" />
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+       <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	   <!-- import de chart.js -->
+	   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	   <h1><center>{{ tabInformation['requestList'][0] }}</center></h1>
+	</head>
+   <body>
+	{% set num = 0 %}
+	{% for table in tabEntity %}
+	<h3><center>{{ tabInformation[num][0] }}</center></h3>
+		<table border="2" id="table{{ num }}">
+			<thead>
 				<tr>
-				    {% set tabKey = table[0] %}
-					{% for key in tabKey %}
-						    {% for k in key %}
-								<td bgcolor="blue"><font color="white">{{ k }}</font></td>
+					{% set tabKeys = table[0] %}
+					{% for keys in tabKeys %}
+							{% for key in keys %}
+								<th>{{ key }}</th>
 							{% endfor %}
 					{% endfor %}
 				</tr>
-				{% set tabValue = table[1] %}
-				{% for value in tabValue %}
-				    <tr>
-						{% for v in value %}
-							<td>{{ v }}</td>
+			</thead>
+			<tbody>
+				{% set tabValues = table[1] %}
+				{% for values in tabValues %}
+					<tr>
+						{% for value in values %}
+							<td>{{ value }}</td>
 						{% endfor %}
 					</tr>
 				{% endfor %}
-			</table><br>
-		{% endfor %}
-       </tbody>
-{% endblock %}
+			</tbody>
+		</table><br>
+	{% set num = num + 1 %}
+	{% endfor %}
 
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="http://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
+	<script src="http://cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js"></script>
+	<script src="http://cdn.datatables.net/colvis/1.1.2/js/dataTables.colVis.min.js"></script>
+	<script src="http://cdn.datatables.net/colreorder/1.1.3/js/dataTables.colReorder.min.js"></script>
+	<style>
+		thead{
+			background-color:#2C3E50;
+			color:white;
+		};
+	</style>
+	<script>
+	var cpt, nbTable = 0;
+	nbTable =  {{ num|json_encode|raw }};
+	
+	function executerDataTable(cpt){
+		var text = '#table'+cpt;
+		
+		return $(document).ready(function(){$(text).dataTable({   
+		    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+					if((iDisplayIndex % 2) == 0){
+						$(nRow).css('background-color', '#566573')
+						//$(nRow).css('color', 'white')
+				
+					}else{
+						$(nRow).css('background-color', '#6B7884')
+					}
+				}
+			});
+		});
+	}
+	
+	for(cpt = 0; cpt < nbTable; cpt++){
+		executerDataTable(cpt);
+	}
+	</script>
+	{# tout le bas doit être généré dans une boucle basé sur le nombre de requete devant afficher un graphique #}
+	{% set tabLength = (tabInformation|length - 2) %}
+	{% set valeur = "null" %}
+	{% set nbRequete = [] %}
+	{% for cpt in 0..tabLength %}
+		{% set chx = tabInformation[cpt][1] %}
+		{% if chx != null %}
+			<h2><center> {{ tabInformation[cpt][0] }} </center></h2>
+			<center><canvas id="chart{{ cpt }}" width="600" height="400"></canvas></center>
+			<script type="text/javascript">
+				afficherGraphique("chart{{ cpt }}", {{ cpt }});
+				//*******************************fonction Javascript*******************************************//
+				function afficherGraphique(canvasId, indiceRequete){
+					// Get the context of the canvas element we want to select
+					 ctx = document.getElementById(canvasId).getContext("2d");
+					
+					//ici je récupère le tableau tabEntity et tabInformation
+					var tabEntity =  {{ tabEntity|json_encode|raw }};
+					var tabInformation =  {{ tabInformation|json_encode|raw }};
+					var choixRenderType = tabInformation[indiceRequete][1];
+				
+					//selon le type de graphique choisit on génère les données diffèrement 
+					//pour cela on va procèder à une vérification
+					if(choixRenderType != null ){	
+						var charVersion1 = ['Line', 'Bar', 'Radar'];
+						var charVersion2 = ['PolarArea', 'Pie', 'Doughnut'];
+						
+						if(choixRenderType == charVersion1[0] || choixRenderType == charVersion1[1] || choixRenderType == charVersion1[2]){
+							var data = genererDataVersion1(indiceRequete, tabEntity);
+							choixTypeGraphique(choixRenderType, data);
+							
+						}else if(choixRenderType == charVersion2[0] || choixRenderType == charVersion2[1] || choixRenderType == charVersion2[2]){
+							var data = genererDataVersion2(indiceRequete, tabEntity);
+							choixTypeGraphique(choixRenderType, data);
+						}	
+					}else{
+						document.write('c null');
+					}
+				}
+				
+				function genererDataVersion1(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt = 0;
+					var tabColor = ['#8E96C5', '#5DA5E8', '#33BDBD', '#C5CED4', '#575D63', '#808000', '#800080', '#000080', '#FFFF00', '#008080'];
+					nbLabel = tabEntity[indiceRequete][1].length;
+					var tabData = retournerTabValue(indiceRequete, tabEntity);
+					var tabLabels = retournerTabLabel(indiceRequete, tabEntity);
+					console.log(tabData);
+					console.log(tabLabels);
+					var data = {
+					labels: tabLabels,
+					datasets: [
+						{
+							label: "My First dataset",
+							fillColor: "rgba(220,220,220,0.2)",
+							strokeColor: "rgba(220,220,220,1)",
+							pointColor: "rgba(220,220,220,1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(220,220,220,1)",
+							data: tabData
+						}
+					]
+					};
+				
+					return data;
+				}
+				
+				function retournerTabValue(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt = 0;
+					nbLabel = tabEntity[indiceRequete][1].length;
+					
+					for(cpt = 0; cpt < nbLabel; cpt++){
+						data.push(tabEntity[indiceRequete][1][cpt][1]);
+					}
+					
+					return data;
+				}
+				
+				function retournerTabLabel(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt = 0;
+					nbLabel = tabEntity[indiceRequete][1].length;
+					
+					for(cpt = 0; cpt < nbLabel; cpt++){
+						data.push(tabEntity[indiceRequete][1][cpt][0]);
+					}
+					
+					return data;
+				}
+				
+				function genererDataVersion2(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt = 0;
+					var tabColor = ['#8E96C5', '#5DA5E8', '#33BDBD', '#C5CED4', '#575D63', '#808000', '#800080', '#000080', '#FFFF00', '#008080'];
+					nbLabel = tabEntity[indiceRequete][1].length;
+					
+					for(cpt = 0; cpt < nbLabel; cpt++){
+						var obj = {
+							value: tabEntity[indiceRequete][1][cpt][1],
+							color:tabColor[cpt],
+							highlight: "#FF5A5E",
+							label: tabEntity[indiceRequete][1][cpt][0]
+						};
+						data.push(obj);
+					}
+				
+					return data;
+				}
+				
+				function choixTypeGraphique(choixChart, data){
+					switch(choixChart){
+						case 'Line':		var myChart = new Chart(ctx).Line(data); break;	
+						case 'Bar':			var myChart = new Chart(ctx).Bar(data); break;
+						case 'Radar':		var myChart = new Chart(ctx).Radar(data); break;
+						case 'PolarArea':	var myChart = new Chart(ctx).PolarArea(data); break;
+						case 'Pie':			var myChart = new Chart(ctx).Pie(data); break;
+						case 'Doughnut':	var myChart = new Chart(ctx).Doughnut(data); break;
+					}
+				}
+			</script>
+		{% endif %}
+	{% endfor %}
+	</body>
+</html>
