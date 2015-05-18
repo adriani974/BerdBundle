@@ -1,5 +1,6 @@
 <html>
 	<head>
+	   <meta charset ="utf-8" >
 	   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 		<link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet"> 
@@ -15,11 +16,12 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 	   
-		<h1><center> Resultat requête : Tableau</center></h1>
+		<h1><center>{{ tabInformation['requestList'][0] }}</center></h1>
 	</head>
    <body>
 		{% set num = 0 %}
 		{% for table in tabEntity %}
+		<h3><center>{{ tabInformation[num][0] }}</center></h3>
 			<table border="4" id="table{{ num }}">
 				<thead>
 					<tr>
@@ -84,103 +86,161 @@
 			executerDataTable(cpt);
 		}
 	</script>
-	<h1><center> Resultat requête : Graphique </center></h1>
-	<center><canvas id="chart" width="600" height="400"></canvas></center>
-	
-	<script type="text/javascript">
-		// Get the context of the canvas element we want to select
-		var ctx = document.getElementById("chart").getContext("2d");
-		var tabEntity =  {{ tabEntity|json_encode|raw }};
-		// type de rendu possible
-		var charVersion1 = ['Line', 'Bar', 'Radar'];
-		var charVersion2 = ['PolarArea', 'Pie', 'Doughnut'];
-		//var tab = tabEntity[3]['key'];
-		//var tabLabels = tab;
-		//var tabData = tabEntity[3]['value'];
-		//var tabData2 = tabEntity[3]['value'];
-		var tabLabels = ["January", "February", "March", "April", "May", "June", "July", "August"];
-		var tabData = [65, 59, 80, 81, 56, 55, 40, 30];
-		var tabData2 = [28, 48, 40, 19, 86, 27, 90, 45];
-		/*var data = {
-		labels: tabLabels,
-		datasets: [
-			{
-				label: "My First dataset",
-				fillColor: "rgba(220,220,220,0.2)",
-				strokeColor: "rgba(220,220,220,1)",
-				pointColor: "rgba(220,220,220,1)",
-				pointStrokeColor: "#fff",
-				pointHighlightFill: "#fff",
-				pointHighlightStroke: "rgba(220,220,220,1)",
-				data: tabData
-			},
-			{
-				label: "My Second dataset",
-				fillColor: "rgba(86,101,115,0.2)",
-				strokeColor: "rgba(86,101,115,1)",
-				pointColor: "rgba(86,101,115,1)",
-				pointStrokeColor: "#fff",
-				pointHighlightFill: "#fff",
-				pointHighlightStroke: "rgba(86,101,115,1)",
-				data: tabData2
-			}
-		]
-		};*/
-		
-		var data = [
-			{
-				value: 150,
-				color:"#F7464A",
-				highlight: "#FF5A5E",
-				label: tabEntity[3]['key'][3]
-			},
-			{
-				value: 150,
-				color: "#46BFBD",
-				highlight: "#5AD3D1",
-				label: tabEntity[3]['key'][3]
-			},
-			{
-				value: 100,
-				color: "#FDB45C",
-				highlight: "#FFC870",
-				label: tabEntity[3]['key'][3]
-			}
-		]
-		
-		var data = genererDataVersion2(0, tabEntity);
-		choixTypeGraphique(charVersion2[1], data);
-		
-		//****************fonction Javascript***************************************/
-		function genererDataVersion2(indiceRequete, tabEntity){
-			var data = []; var nbLabel, cpt = 0;
-			
-			nbLabel = tabEntity[indiceRequete]['value'].length;
-			
-			for(cpt = 0; cpt < nbLabel; cpt++){
-				var ob = {
-					value: tabEntity[indiceRequete]['value'][cpt],
-					color:"#F7464A",
-					highlight: "#FF5A5E",
-					label: tabEntity[indiceRequete]['key'][cpt]
-				};
-				data.push(ob);
-			}
-			//console.log();
-			return data;
-		}
-		
-		function choixTypeGraphique(choixChart, data){
-			
-			switch(choixChart){
-				case 'Line':		var myChart = new Chart(ctx).Line(data); break;	
-				case 'Bar':			var myChart = new Chart(ctx).Bar(data); break;
-				case 'Radar':		var myChart = new Chart(ctx).Radar(data); break;
-				case 'PolarArea':	var myChart = new Chart(ctx).PolarArea(data); break;
-				case 'Pie':			var myChart = new Chart(ctx).Pie(data); break;
-				case 'Doughnut':	var myChart = new Chart(ctx).Doughnut(data); break;
-			}
-		}	
-	</script>
+	{% set tabLength = (tabInformation|length - 2) %}
+	{% set valeur = "null" %}
+	{% set nbRequete = [] %}
+	{% for cpt in 0..tabLength %}
+		{% set chx = tabInformation[cpt][1] %}
+		{% if chx != null %}
+			<h3><center> {{ tabInformation[cpt][0] }} </center></h3>
+			<center><canvas id="chart{{ cpt }}" width="600" height="400"></canvas></center>
+			<script type="text/javascript">
+				afficherGraphique("chart{{ cpt }}", {{ cpt }});
+				//*******************************fonction Javascript*******************************************//
+				function afficherGraphique(canvasId, indiceRequete){
+					// Get the context of the canvas element we want to select
+					 ctx = document.getElementById(canvasId).getContext("2d");
+					
+					//ici je récupère le tableau tabEntity et tabInformation
+					var tabEntity =  {{ tabEntity|json_encode|raw }};
+					var tabInformation =  {{ tabInformation|json_encode|raw }};
+					var choixRenderType = tabInformation[indiceRequete][1];
+					console.log(tabEntity);
+					//selon le type de graphique choisit on génère les données diffèrement 
+					//pour cela on va procèder à une vérification
+					if(choixRenderType != null ){	
+						var charVersion1 = ['Line', 'Bar', 'Radar'];
+						var charVersion2 = ['PolarArea', 'Pie', 'Doughnut'];
+						
+						if(choixRenderType == charVersion1[0] || choixRenderType == charVersion1[1] || choixRenderType == charVersion1[2]){
+							var data = genererDataVersion1(indiceRequete, tabEntity);
+							choixTypeGraphique(choixRenderType, data);
+							
+						}else if(choixRenderType == charVersion2[0] || choixRenderType == charVersion2[1] || choixRenderType == charVersion2[2]){
+							var data = genererDataVersion2(indiceRequete, tabEntity);
+							choixTypeGraphique(choixRenderType, data);
+						}	
+					}
+				}
+				
+				function genererDataVersion1(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt = 0;
+					var tabColor = ['#8E96C5', '#5DA5E8', '#33BDBD', '#C5CED4', '#575D63', '#808000', '#800080', '#000080', '#FFFF00', '#008080'];
+					nbLabel = tabEntity[indiceRequete]['key'].length;
+					var tabData = retournerTabValue(indiceRequete, tabEntity);
+					var tabLabels = retournerTabLabel(indiceRequete, tabEntity);
+					console.log(tabData);
+					console.log(tabLabels);
+					var data = {
+					labels: tabLabels,
+					datasets: [
+						{
+							label: "My First dataset",
+							fillColor: "rgba(220,220,220,0.2)",
+							strokeColor: "rgba(220,220,220,1)",
+							pointColor: "rgba(220,220,220,1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(220,220,220,1)",
+							data: tabData
+						}
+					]
+					};
+				
+					return data;
+				}
+				
+				function retournerTabValue(indiceRequete, tabEntity){
+					var data = []; var nbLabel, nbValue, cpt = 0;
+					console.log(tabEntity);
+					nbLabel = tabEntity[indiceRequete]['key'].length;
+					nbValue = tabEntity[indiceRequete]['value'].length;
+					
+					for(cpt = 0; cpt < nbValue; cpt++){
+						if(cpt % 2){
+							data.push(tabEntity[indiceRequete]['value'][cpt]);
+						}
+					}
+					
+					return data;
+				}
+				
+				function retournerTabLabel(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt = 0;
+					console.log(tabEntity);
+					nbLabel = tabEntity[indiceRequete]['key'].length;
+					nbValue = tabEntity[indiceRequete]['value'].length;
+					
+					for(cpt = 0; cpt < nbValue; cpt++){
+						if(!(cpt % 2)){
+							data.push(tabEntity[indiceRequete]['value'][cpt]);
+						}
+					}
+					
+					return data;
+				}
+				
+				function genererDataVersion2(indiceRequete, tabEntity){
+					var data = []; var nbLabel, cpt, plus, plusDeux = 0;
+					plusDeux = 1; plus = 0;
+					var tabColor = ['#8E96C5', '#5DA5E8', '#33BDBD', '#C5CED4', '#575D63', '#808000', '#800080', '#000080', '#FFFF00', '#008080'];
+					nbLabel = tabEntity[indiceRequete]['value'].length;
+					
+					for(cpt = 0; cpt < (nbLabel/2); cpt++){
+						//console.log(tabEntity[indiceRequete]['value'][plusDeux]);
+						//console.log(plusDeux);
+						console.log(tabEntity[indiceRequete]['value'][plus]);
+						console.log(plus);
+						var obj = {
+							value: tabEntity[indiceRequete]['value'][plusDeux],
+							color:tabColor[cpt],
+							highlight: "#FF5A5E",
+							label: tabEntity[indiceRequete]['value'][plus]
+						};
+						plus = plus + 2;
+						plusDeux = plusDeux + 2;
+						data.push(obj);
+					}
+					
+					/*var obj = {
+							value: tabEntity[indiceRequete]['value'][1],
+							color:tabColor[cpt],
+							highlight: "#FF5A5E",
+							label: tabEntity[indiceRequete]['value'][0]
+						};
+						data.push(obj);
+						
+					var obj = {
+							value: tabEntity[indiceRequete]['value'][3],
+							color:tabColor[cpt],
+							highlight: "#FF5A5E",
+							label: tabEntity[indiceRequete]['value'][2]
+						};
+						data.push(obj);
+						
+					var obj = {
+							value: tabEntity[indiceRequete]['value'][5],
+							color:tabColor[cpt],
+							highlight: "#FF5A5E",
+							label: tabEntity[indiceRequete]['value'][4]
+						};
+						data.push(obj);*/
+				
+					return data;
+				}
+				
+				function choixTypeGraphique(choixChart, data){
+					switch(choixChart){
+						case 'Line':		var myChart = new Chart(ctx).Line(data); break;	
+						case 'Bar':			var myChart = new Chart(ctx).Bar(data); break;
+						case 'Radar':		var myChart = new Chart(ctx).Radar(data); break;
+						case 'PolarArea':	var myChart = new Chart(ctx).PolarArea(data); break;
+						case 'Pie':			var myChart = new Chart(ctx).Pie(data); break;
+						case 'Doughnut':	var myChart = new Chart(ctx).Doughnut(data); break;
+					}
+				}
+			</script>
+		{% endif %}
+	{% endfor %}
 	</body>
 </html>

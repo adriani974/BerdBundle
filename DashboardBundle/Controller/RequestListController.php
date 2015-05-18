@@ -176,7 +176,7 @@ class RequestListController extends Controller
 		$tabEntity[$cpt] = array(0 => $listField, 1 => $listValue,);
 		
 		//récupère de nouveau les champs
-		$nameField = $this->recupKeyTabAction($nbFields, $entity3);
+		$listField = $this->recupKeyTabAction($nbFields, $entity3);
 		
 		//récupère l'entité d'une réquête en indiquant son id
 		$requete = $this->returnEntityRequete($requeteId);
@@ -186,8 +186,7 @@ class RequestListController extends Controller
 		
 		//récupère deux champs de requestList
 		$requestList = $this->recupRequestListAction($requestListId);
-
-		//à travailler
+		
 		$tabInformation['requestList'] = [$requestList[0]['requestListName'], $requestList[0]['description']];
 		$tabInformation[$cpt] = [$requete->getRequestName(), $requete->getRenderType()];
 		
@@ -280,12 +279,18 @@ class RequestListController extends Controller
 	*   @Route("/afficherResultat", name="requestlist_afficherResultat")
     *   @Template("BerdDashboardBundle:RequestList:afficherResultat.html.twig")
 	*/
-	public function afficherResultatAction($userId = '7OwNzMxcQD'){
+	public function afficherResultatAction($userId = 'essais'){
 		$tabEntity = array(); $tabInformation = array();
 		$requestListId = 3; 
 		
-		$resultId = $this->recupResultIdAction($userId);
+		$resultId = $this->recupResultIdAction($userId); 
 		
+		//je récupère les requêtes selon id de requestlist
+		$entity = $this->recupRequeteAction($requestListId);
+		$nbRequete = sizeof($entity['entity']);
+		$requete = new Requete();
+		
+		//boucle pour récupéré tout les champs d'une ou plusieurs requête
 		$nbResult = sizeof($resultId);
 		for($cpt = 0; $cpt < $nbResult; $cpt++){
 			$results = $resultId[$cpt]['id'];
@@ -293,15 +298,17 @@ class RequestListController extends Controller
 			$tabEntity[$cpt] = $entity3;
 		}
 		
-		//récupère l'entité d'une réquête en indiquant son id
-		//$requete = $this->returnEntityRequete($requeteId);
-		
 		//récupère deux champs de requestList
-		//$requestList = $this->recupRequestListAction($requestListId);
-
-		//à travailler
-		//$tabInformation['requestList'] = [$requestList[0]['requestListName'], $requestList[0]['description']];
-		//$tabInformation[$cpt] = [$requete->getRequestName(), $requete->getRenderType()];
+		$requestList = $this->recupRequestListAction($requestListId);
+		
+		$tabInformation['requestList'] = [$requestList[0]['requestListName'], $requestList[0]['description']];
+		
+		for($cpt = 0; $cpt < $nbRequete; $cpt++){
+			$requeteId = $entity['entity'][$cpt]['id'];
+			//récupère l'entité d'une réquête en indiquant son id
+			$requete = $this->returnEntityRequete($requeteId);
+			$tabInformation[$cpt] = [$requete->getRequestName(), $requete->getRenderType()];
+		}
 		
 		return Array('tabEntity' => $tabEntity, 'tabInformation' => $tabInformation, );
 	}

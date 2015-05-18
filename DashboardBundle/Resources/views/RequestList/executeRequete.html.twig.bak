@@ -20,7 +20,7 @@
 	{% set num = 0 %}
 	{% for table in tabEntity %}
 	<h3><center>{{ tabInformation[num][0] }}</center></h3>
-		<table border="2" id="table{{ num }}">
+		<table border="4" id="table{{ num }}">
 			<thead>
 				<tr>
 					{% set tabKeys = table[0] %}
@@ -88,7 +88,7 @@
 	{% for cpt in 0..tabLength %}
 		{% set chx = tabInformation[cpt][1] %}
 		{% if chx != null %}
-			<h2><center> {{ tabInformation[cpt][0] }} </center></h2>
+			<h3><center> {{ tabInformation[cpt][0] }} </center></h3>
 			<center><canvas id="chart{{ cpt }}" width="600" height="400"></canvas></center>
 			<script type="text/javascript">
 				afficherGraphique("chart{{ cpt }}", {{ cpt }});
