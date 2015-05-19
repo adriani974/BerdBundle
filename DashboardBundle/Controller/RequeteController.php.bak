@@ -28,14 +28,14 @@ class RequeteController extends Controller
 	
 	/**
 	 * cette fonction est appeler dans createAction elle permet de recuperer les paramêtres d'une requête
-	 * @param requete 
+	 * @param requete la requete sur laquel on extrait les paramêtres
      * @Route("/recupererParams", name="_recupererParams")
      */
 	 function decouperRequeteAction($requete, $requeteId){
 		//Sépare le corps des parametres
-		$firstSplit = explode('WHERE',$requete);
+		$firstSplit = explode('WHERE', $requete);
 		//Separe les mots dans la partie parametre et stockage dans des tableaux
-		$secondSplit = explode(' ',$firstSplit[1]);
+		$secondSplit = explode(' ', $firstSplit[1]);
 		$requestParams = [];
 		$params = [];
 		$requestParams['requestBody'] = $requete;
@@ -83,6 +83,7 @@ class RequeteController extends Controller
 	*  cette fonction sauvegarde les params dans la table params
 	*  @param requestParams est un tableau contenant les valeurs à sauvegarder
 	*  @param $requeteId est l'id de l'entité requete
+	*  @param nbFields indique le nombre de champs à enregistrer
 	*/
 	function saveParamsAction($requestParams, $requeteId, $nbFields){
 		
@@ -96,8 +97,7 @@ class RequeteController extends Controller
 			$entity->setUserId('7OwNzMxcQD');
 			$em->persist($entity);
 			$em->flush();
-		}
-		
+		}	
 	}
 	
 	/**

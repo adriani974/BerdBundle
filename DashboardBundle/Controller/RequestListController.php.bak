@@ -42,7 +42,7 @@ class RequestListController extends Controller
 	*   @Route("/recupRequete", name="requestlist_recupRequete")
     *   @Template("BerdDashboardBundle:RequestList:recupRequete.html.twig")
 	*/
-	public function recupRequeteAction($requestListId){
+	public function recupRequete($requestListId){
 		
 		$query = $this->getDoctrine()->getManager()
                ->createQuery('SELECT r.id, r.body, r.requestName  FROM Berd\DashboardBundle\Entity\Requete r
@@ -79,6 +79,7 @@ class RequestListController extends Controller
 		
         return array('entity' => $entity, );
 	}
+	
 	/**
 	*   @Route("/testRequete", name="requestlist_testRequete")
     *   @Template("BerdDashboardBundle:RequestList:testRequete.html.twig")
@@ -107,15 +108,16 @@ class RequestListController extends Controller
     *   @Template("BerdDashboardBundle:RequestList:executeRequete.html.twig")
 	*/
 	public function executeRequeteAction(){
+		$entity2 = array(); $tabEntity = array(); 
+		$tabInformation = array(); $requete = new Requete();
+		
 		//l'id de requestList sera donné en dur
-		$requestListId = 3; 
+		$requestListId = 1; 
 		
 		//je récupère les requêtes selon id de requestlist
-		$entity = $this->recupRequeteAction($requestListId);
+		$entity = $this->recupRequete($requestListId);
 		
 		$nbRequete = sizeof($entity['entity']);
-		$entity2 = array(); $tabEntity = array(); $tabInformation = array();
-		$requete = new Requete();
 		
 		//récupération des paramétres lié au requete retourné
 		$this->boucleRecupParam($nbRequete, $entity, $entity2);
@@ -144,15 +146,12 @@ class RequestListController extends Controller
 				$entity3 = $query->getArrayResult();
 				
 				//puis ont effectue une procèdure qui sauvegarde les champs et enregistrements dans des tables
-				$this->executerCetteProcedure($entity3, $cpt, $requeteId, $tabEntity, $requestListId, $tabInformation);
+				$this->recupererEtSauvegarder($entity3, $cpt, $requeteId, $tabEntity, $requestListId, $tabInformation);
 				
 			} catch (\Doctrine\Orm\NoResultException $e) {
 				$entity3 = null;
 			}	
 		}
-		var_dump($tabEntity);
-		var_dump($tabInformation);
-		
         return array('tabEntity' => $tabEntity, 'tabInformation' => $tabInformation, );
 	}
 	
@@ -163,7 +162,7 @@ class RequestListController extends Controller
 	*	@param requeteId id d'une requete qu'on souhaite récupéré
 	*	@param tabEntity tableau qui contiendra le nom des champs et leur valeurs
 	*/
-	public function executerCetteProcedure($entity3, $cpt, $requeteId, &$tabEntity, $requestListId, &$tabInformation){
+	public function recupererEtSauvegarder($entity3, $cpt, $requeteId, &$tabEntity, $requestListId, &$tabInformation){
 		//nombre de champ contenu dans entity3
 		$nbFields = sizeof($entity3);
 		
@@ -171,14 +170,14 @@ class RequestListController extends Controller
 		$this->findAndReplaceDate($entity3);
 		
 		//récupère les champs et leur valeurs
-		$listField = $this->recupKeyTabAction(1, $entity3);
-		$listValue = $this->recupValueTabAction($nbFields, $entity3);
+		$listField = $this->recupKeyTab(1, $entity3);
+		$listValue = $this->recupValueTab($nbFields, $entity3);
 		
 		//enregistre dans tabEntity listField et listValue
 		$tabEntity[$cpt] = array(0 => $listField, 1 => $listValue,);
 		
 		//récupère de nouveau les champs
-		$listField = $this->recupKeyTabAction($nbFields, $entity3);
+		$listField = $this->recupKeyTab($nbFields, $entity3);
 		
 		//récupère l'entité d'une réquête en indiquant son id
 		$requete = $this->returnEntityRequete($requeteId);
@@ -187,14 +186,12 @@ class RequestListController extends Controller
 		$nbTab2 = sizeof($entity3[0]);
 		
 		//récupère deux champs de requestList
-		$requestList = $this->recupRequestListAction($requestListId);
-		
+		$requestList = $this->recupRequestList($requestListId);
 		$tabInformation['requestList'] = [$requestList[0]['requestListName'], $requestList[0]['description']];
 		$tabInformation[$cpt] = [$requete->getRequestName(), $requete->getRenderType()];
 		
 		//je crée un enregistrement result et resultfield
-		//$this->saveResultAnResultFieldsAction($requete, $nbFields, $nbTab2, $listValue, $listField);
-		
+		//$this->saveResultAndResultFields($requete, $nbFields, $nbTab2, $listValue, $listField);	
 	}
 	
 	/**
@@ -218,8 +215,7 @@ class RequestListController extends Controller
 				$key = $keys[$cpt2];
 		
 				if($entity3[$cpt][$key] instanceof \DateTime){
-					$entity3[$cpt][$key] = $entity3[$cpt][$key]->format('d-m-Y');
-					
+					$entity3[$cpt][$key] = $entity3[$cpt][$key]->format('d-m-Y');	
 				}
 			}
 		}	
@@ -248,7 +244,6 @@ class RequestListController extends Controller
 	*	@param cpt indique l'indice dans le tableau à laquelle on souhaite acceder
 	*/
 	public function recupKOV(&$key, &$operator, &$value, &$keyValue, $nbParams, $entity2, $cpt){
-		
 		for($cpt2 = 0; $cpt2 < $nbParams; $cpt2++){
 				$key[$cpt2] = $entity2[$cpt]['entity'][$cpt2]['paramKey'];
 				$operator[$cpt2] = $entity2[$cpt]['entity'][$cpt2]['operator'];
@@ -269,10 +264,10 @@ class RequestListController extends Controller
 	*	@param listValue un tableau contenant des valeurs
 	*	@param listField un tableau contenant des champs
 	*/
-	public function saveResultAnResultFieldsAction($requete, $nbFields, $nbTab2, $listValue, $listField){
+	public function saveResultAndResultFields($requete, $nbFields, $nbTab2, $listValue, $listField){
 		$result = new Results();
-		$result = $this->saveResultsAction($requete);
-		$this->saveResultFieldsAction($result, $nbFields, $nbTab2, $listValue, $listField);	
+		$result = $this->saveResults($requete);
+		$this->saveResultFields($result, $nbFields, $nbTab2, $listValue, $listField);	
 	}
 	
 	/**
@@ -285,10 +280,10 @@ class RequestListController extends Controller
 		$tabEntity = array(); $tabInformation = array();
 		$requestListId = 3; 
 		
-		$resultId = $this->recupResultIdAction($userId); 
+		$resultId = $this->recupResultId($userId); 
 		
 		//je récupère les requêtes selon id de requestlist
-		$entity = $this->recupRequeteAction($requestListId);
+		$entity = $this->recupRequete($requestListId);
 		$nbRequete = sizeof($entity['entity']);
 		$requete = new Requete();
 		
@@ -296,13 +291,12 @@ class RequestListController extends Controller
 		$nbResult = sizeof($resultId);
 		for($cpt = 0; $cpt < $nbResult; $cpt++){
 			$results = $resultId[$cpt]['id'];
-			$entity3 = $this->recupResultFieldAction($results);
+			$entity3 = $this->recupResultField($results);
 			$tabEntity[$cpt] = $entity3;
 		}
 		
 		//récupère deux champs de requestList
-		$requestList = $this->recupRequestListAction($requestListId);
-		
+		$requestList = $this->recupRequestList($requestListId);
 		$tabInformation['requestList'] = [$requestList[0]['requestListName'], $requestList[0]['description']];
 		
 		for($cpt = 0; $cpt < $nbRequete; $cpt++){
@@ -320,7 +314,7 @@ class RequestListController extends Controller
 	*	@param resultId id d'un results avec lequel ont souhaite effectuer la requete
 	*	@return entity retourne les enregistrements récupéré de la table resultFields
 	*/
-	public function recupResultFieldAction($resultId){
+	public function recupResultField($resultId){
 			$query = $this->getDoctrine()->getManager()
 				   ->createQuery('SELECT r.fieldName, r.fieldValue  FROM Berd\DashboardBundle\Entity\ResultFields r
 							WHERE r.results = :resultId')
@@ -333,14 +327,17 @@ class RequestListController extends Controller
 				$entity = null;
 			}
 			
-		$entity = $this->separerField($entity);
+		$entity = $this->separateField($entity);
 		
         return $entity;
 	}
 	
 	/**
+	*	récupère une liste de requête
+	*	@param requestListId id de la liste à récupéré
+	*	@return entity retourne la liste de requête récupéré
 	*/
-	public function recupRequestListAction($requestListId){
+	public function recupRequestList($requestListId){
 			$query = $this->getDoctrine()->getManager()
 				   ->createQuery('SELECT r.requestListName, r.description  FROM Berd\DashboardBundle\Entity\RequestList r
 							WHERE r.id = :requestListId')
@@ -358,10 +355,10 @@ class RequestListController extends Controller
 	
 	/**
 	*	sépare les données reçu en deux tableaux
-	*	@param le tableau qu'on souhaite séparer les indices(champs) des valeurs
-	*	@return un tableau contenant un tableau de keys et un tableau de values
+	*	@param entity tableau qu'on souhaite séparer les indices(champs) des valeurs
+	*	@return tab tableau contenant un tableau de keys et un tableau de values
 	*/
-	public function separerField($entity){
+	public function separateField($entity){
 		$nbFields = sizeof($entity);
 		$tab = array();
 		
@@ -381,7 +378,7 @@ class RequestListController extends Controller
 	*	@param requeteId id de requete qui servira de recherche
 	*	@return entity retourne le résultat de la requête
 	*/
-	public function recupResultIdAction($userId){
+	public function recupResultId($userId){
 		$query = $this->getDoctrine()->getManager()
                ->createQuery('SELECT r.id  FROM Berd\DashboardBundle\Entity\Results r
                         WHERE r.userId = :userId')
@@ -398,10 +395,10 @@ class RequestListController extends Controller
 	/**
 	*	récupère l'indice d'un tableau associatif
 	*	@param nbTab taille du tableau
-	*	@param $tab le tableau qu'on souhaite récupéré les indices
+	*	@param tab le tableau qu'on souhaite récupéré les indices
     *	@return tabField une tableau contenant les indices récupéré	
 	*/
-	public function recupKeyTabAction($nbTab, $tab){
+	public function recupKeyTab($nbTab, $tab){
 		$tabField = array();
 		for($cpt = 0; $cpt < $nbTab; $cpt++){
 			$tabField[$cpt] = array_keys($tab[$cpt]);
@@ -412,10 +409,10 @@ class RequestListController extends Controller
 	/**
 	*	récupère les valeurs d'un tableau associatif
 	*	@param nbTab taille du tableau
-	*	@param $tab le tableau qu'on souhaite récupéré les valeurs
+	*	@param tab le tableau qu'on souhaite récupéré les valeurs
     *	@return tabValue une tableau contenant les valeurs récupéré	
 	*/
-	public function recupValueTabAction($nbTab, $tab){
+	public function recupValueTab($nbTab, $tab){
 		$tabValue = array();
 		for($cpt = 0; $cpt < $nbTab; $cpt++){
 			$tabValue[$cpt] = array_values($tab[$cpt]);
@@ -426,8 +423,9 @@ class RequestListController extends Controller
 	/**
 	*	Sauvegarde les valeurs dans la table Result
 	*	@param requete correspond à l'entité de type requete
+	*	@return entity retourne une instance de results
 	*/
-	public function saveResultsAction($requete){
+	public function saveResults($requete){
 		$em= $this->getDoctrine()->getManager();
 		$entity = new Results();
 		$entity->setFieldList('liste resultat');
@@ -449,7 +447,7 @@ class RequestListController extends Controller
 	*	@param listValue correspond à une liste de valeur d'enregistrement
 	*   @param listField correspond à une liste de nom de champs
 	*/
-	public function saveResultFieldsAction($result, $nbTab, $nbTab2, $listValue, $listField){
+	public function saveResultFields($result, $nbTab, $nbTab2, $listValue, $listField){
 		
 		for($cpt = 0; $cpt < $nbTab; $cpt++){
 			for($cpt2 = 0; $cpt2 < $nbTab2; $cpt2++){

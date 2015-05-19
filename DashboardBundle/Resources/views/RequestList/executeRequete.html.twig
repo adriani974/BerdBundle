@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<meta charset ="utf-8" >
+	   <meta charset ="utf-8" >
 	   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
        <link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet"> 
@@ -15,6 +15,7 @@
 	   <!-- import de chart.js -->
 	   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+		<Title>Dashboard Bundle</Title>
 	   <h1><center>{{ tabInformation['requestList'][0] }}</center></h1>
 	</head>
    <body>
@@ -61,6 +62,10 @@
 	var cpt, nbTable = 0;
 	nbTable =  {{ num|json_encode|raw }};
 	
+	/**
+	*	personnalise la couleur des champs et enregistrement
+	*	@param cpt compteur indiquant le nombre d'itération actuel
+	**/
 	function executerDataTable(cpt){
 		var text = '#table'+cpt;
 		
@@ -82,7 +87,6 @@
 		executerDataTable(cpt);
 	}
 	</script>
-	{# tout le bas doit être généré dans une boucle basé sur le nombre de requete devant afficher un graphique #}
 	{% set tabLength = (tabInformation|length - 2) %}
 	{% set valeur = "null" %}
 	{% set nbRequete = [] %}
@@ -93,7 +97,12 @@
 			<center><canvas id="chart{{ cpt }}" width="600" height="400"></canvas></center>
 			<script type="text/javascript">
 				afficherGraphique("chart{{ cpt }}", {{ cpt }});
-				//*******************************fonction Javascript*******************************************//
+
+				/**
+				*	affiche le graphique
+				*   @param canvasId id du canvas dans lequel on souhaite faire apparaître le graphique
+				*	@param indiceRequete indice permettant de designer un emplacement dans un tableau
+				**/
 				function afficherGraphique(canvasId, indiceRequete){
 					// Get the context of the canvas element we want to select
 					 ctx = document.getElementById(canvasId).getContext("2d");
@@ -117,11 +126,15 @@
 							var data = genererDataVersion2(indiceRequete, tabEntity);
 							choixTypeGraphique(choixRenderType, data);
 						}	
-					}else{
-						document.write('c null');
 					}
 				}
 				
+				/**
+				* génère du data pour les graphiques de type Line, Bar, Radar
+				* @param indiceRequete selectionne la requete qu'on souhaite extraire les données
+				* @param tabEntity tableau contenant des resultats d'une requête
+				* @return data tableau contenant des objets
+				**/
 				function genererDataVersion1(indiceRequete, tabEntity){
 					var data = []; var nbLabel, cpt = 0;
 					var tabColor = ['#8E96C5', '#5DA5E8', '#33BDBD', '#C5CED4', '#575D63', '#808000', '#800080', '#000080', '#FFFF00', '#008080'];
@@ -149,6 +162,12 @@
 					return data;
 				}
 				
+				/**
+				* retourne un tableau contenant les valeurs
+				* @param indiceRequete selectionne la requete qu'on souhaite extraire les valeurs
+				* @param tabEntity tableau contenant des resultats d'une requête
+				* @return data tableau contenant les valeurs extraites
+				**/
 				function retournerTabValue(indiceRequete, tabEntity){
 					var data = []; var nbLabel, cpt = 0;
 					nbLabel = tabEntity[indiceRequete][1].length;
@@ -160,6 +179,12 @@
 					return data;
 				}
 				
+				/**
+				* retourne un tableau contenant les labels
+				* @param indiceRequete selectionne la requete qu'on souhaite extraire les labels
+				* @param tabEntity tableau contenant des resultats d'une requête
+				* @return data tableau contenant les labels extraites
+				**/
 				function retournerTabLabel(indiceRequete, tabEntity){
 					var data = []; var nbLabel, cpt = 0;
 					nbLabel = tabEntity[indiceRequete][1].length;
@@ -171,6 +196,12 @@
 					return data;
 				}
 				
+				/**
+				* génère du data pour les graphiques de type PolarArea, Pie, Doughnut
+				* @param indiceRequete selectionne la requete qu'on souhaite extraire les données
+				* @param tabEntity tableau contenant des resultats d'une requête
+				* @return data tableau contenant des objets
+				**/
 				function genererDataVersion2(indiceRequete, tabEntity){
 					var data = []; var nbLabel, cpt = 0;
 					var tabColor = ['#8E96C5', '#5DA5E8', '#33BDBD', '#C5CED4', '#575D63', '#808000', '#800080', '#000080', '#FFFF00', '#008080'];
@@ -189,6 +220,11 @@
 					return data;
 				}
 				
+				/**
+				*  choix du graphique
+				*  @param choixChart correspond au renderType de l'entité requête
+				*  @param data correspond aux données représenter visuellement par le graphique
+				**/
 				function choixTypeGraphique(choixChart, data){
 					switch(choixChart){
 						case 'Line':		var myChart = new Chart(ctx).Line(data); break;	

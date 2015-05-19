@@ -33,9 +33,9 @@ class RequeteController extends Controller
      */
 	 function decouperRequeteAction($requete, $requeteId){
 		//Sépare le corps des parametres
-		$firstSplit = explode('WHERE',$requete);
+		$firstSplit = explode('WHERE', $requete);
 		//Separe les mots dans la partie parametre et stockage dans des tableaux
-		$secondSplit = explode(' ',$firstSplit[1]);
+		$secondSplit = explode(' ', $firstSplit[1]);
 		$requestParams = [];
 		$params = [];
 		$requestParams['requestBody'] = $requete;
@@ -82,7 +82,7 @@ class RequeteController extends Controller
 	/**
 	*  cette fonction sauvegarde les params dans la table params
 	*  @param requestParams est un tableau contenant les valeurs à sauvegarder
-	*  @param $requeteId est l'id de l'entité requete
+	*  @param requeteId est l'id de l'entité requete
 	*  @param nbFields indique le nombre de champs à enregistrer
 	*/
 	function saveParamsAction($requestParams, $requeteId, $nbFields){
@@ -103,7 +103,7 @@ class RequeteController extends Controller
 	/**
 	*	met à jour le champ body.
 	*  @param id correspond à l'id de l'enregistrement qu'on souhaite mettre à jour
-	*  @param $body correspond à la nouvelle valeur qu'on souhaite sauvegarder
+	*  @param body correspond à la nouvelle valeur qu'on souhaite sauvegarder
 	*/
 	function updateFieldBodyAction($id, $body)
     {
